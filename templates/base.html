@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Framgia Trainning System</title>
+
+    <!-- css/ -->
+
+    <link href="{% static 'css/module-essentials.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-material.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-layout.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-sidebar.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-sidebar-skins.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-navbar.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-messages.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-carousel-slick.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-charts.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-maps.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-colors-alerts.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-colors-background.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-colors-buttons.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/module-colors-text.min.css' %}" rel="stylesheet" />
+
+    {% block css %}
+    {% endblock %}
+</head>
+<body>
+    <div class="st-container">
+        {% include "header.html" %}
+        {% block content %}
+
+        {% endblock%}
+        {% include "footer.html" %}
+    </div>
+
+
+    <script>
+        var colors = {
+            "danger-color": "#e74c3c",
+            "success-color": "#81b53e",
+            "warning-color": "#f0ad4e",
+            "inverse-color": "#2c3e50",
+            "info-color": "#2d7cb5",
+            "default-color": "#6e7882",
+            "default-light-color": "#cfd9db",
+            "purple-color": "#9D8AC7",
+            "mustard-color": "#d4d171",
+            "lightred-color": "#e15258",
+            "body-bg": "#f6f6f6"
+        };
+        var config = {
+            theme: "html",
+            skins: {
+                "default": {
+                    "primary-color": "#42a5f5"
+                }
+            }
+        };
+    </script>
+    <script src="{% static 'js/vendor-core.min.js' %}"></script>
+    <script src="{% static 'js/vendor-countdown.min.js' %}"></script>
+    <script src="{% static 'js/vendor-tables.min.js' %}"></script>
+    <script src="{% static 'js/vendor-forms.min.js' %}"></script>
+    <script src="{% static 'js/vendor-carousel-slick.min.js' %}"></script>
+    <script src="{% static 'js/vendor-player.min.js' %}"></script>
+    <script src="{% static 'js/vendor-charts-flot.min.js' %}"></script>
+    <script src="{% static 'js/vendor-nestable.min.js' %}"></script>
+    <script src="{% static 'js/module-essentials.min.js' %}"></script>
+    <script src="{% static 'js/module-material.min.js' %}"></script>
+    <script src="{% static 'js/module-layout.min.js' %}"></script>
+    <script src="{% static 'js/module-sidebar.min.js' %}"></script>
+    <script src="{% static 'js/module-carousel-slick.min.js' %}"></script>
+    <script src="{% static 'js/module-player.min.js' %}"></script>
+    <script src="{% static 'js/module-messages.min.js' %}"></script>
+    <script src="{% static 'js/module-maps-google.min.js' %}"></script>
+    <script src="{% static 'js/module-charts-flot.min.js' %}"></script>
+    <script src="{% static 'js/theme-core.min.js' %}"></script>
+</body>
+</html>
