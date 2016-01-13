@@ -93,7 +93,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
@@ -105,7 +105,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/statics/'
 
 STATICFILES_DIRS = (
     os.path.join(
@@ -113,3 +113,11 @@ STATICFILES_DIRS = (
         'statics',
     ),
 )
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'brs.framgia@gmail.com'
+EMAIL_HOST_PASSWORD = "1111qqqq@Q"
+EMAIL_PORT = 587
