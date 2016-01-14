@@ -11,7 +11,7 @@
                 <div class="panel panel-default text-center paper-shadow" data-z="0.5">
                     <h1 class="text-display-1 text-center margin-bottom-none">Sign In</h1>
                     <div class="panel-body">
-                        <form method="post" id="submit-form" class="" action="{% url 'users:login' %}">
+                        <form method="post" id="submit-form" class="" action="/users/login/">
                             {% csrf_token %}
                             {% if form.non_field_errors %}
                                 <div class="form-group text-danger">
@@ -62,7 +62,7 @@
                                 <button type="submit" class="btn btn-primary">Login <i class="fa fa-fw fa-unlock-alt"></i></button>
                             </div>
                             <a href="#" class="forgot-password">Forgot password?</a>
-                            <a href="{% url 'users:signup' %}" class="link-text-color">Create account</a>
+                            <a href="/users/signup/" class="link-text-color">Create account</a>
                         </form>
                     </div>
                 </div>
