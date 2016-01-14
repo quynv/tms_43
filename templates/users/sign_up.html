@@ -7,124 +7,137 @@
 <div id="content">
     <div class="container-fluid">
         <div class="lock-container">
-            <div class="panel panel-default text-center paper-shadow" data-z="0.5">
-                <h1 class="text-display-1">Create account</h1>
-                <div class="panel-body">
-                    <!-- Signup -->
-                    <form method="post" role="form" action="{% url 'users:signup' %}">
-                        {% csrf_token %}
-                        {% if form.non_field_errors %}
-                            <div class="form-group text-danger">
-                                {{ form.non_field_errors }}
-                            </div>
-                        {% endif %}
+            <div class=" col-md-8 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                <div class="panel panel-default text-center paper-shadow" data-z="0.5">
+                    <h1 class="text-display-1">Create account</h1>
+                    <div class="panel-body">
+                        <!-- Signup -->
+                        <form method="post" role="form" action="/users/signup/">
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                <div class="form-group text-danger">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
 
-                        <div class="form-group ">
-                            <div class="form-control-material">
-                                <input id="userName" type="text" class="form-control label-input" placeholder="Username"  name="username">
-                                <label for="userName">Username</label>
-                            </div>
-                            {% if form.username.help_text %}
-                                <span id="help_text_{{ form.username.id_for_label }}" class="help-block">{{ form.username.help_text }}</span>
-                            {% endif %}
-                            {% if form.username.errors %}
-                            <div class="input-group text-danger text-center">
-                                    {% for error in form.username.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <div class="form-control-material">
-                                <input id="firstName" type="text" class="form-control label-input" placeholder="First Name" name="first_name">
-                                <label for="firstName">First name</label>
-                            </div>
-                            {% if form.first_name.errors %}
-                            <div class="input-group text-danger text-center">
-                                <div class='form-errors '>
-                                    {% for error in form.first_name.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
+                            <div class="form-group ">
+                                <div class="form-control-material">
+                                    <label for="{{ form.username.id_for_label }}">Username</label>
+                                    <input name="{{ form.username.html_name }}" type="text" class="form-control" id="{{ form.username.id_for_label }}" placeholder="Username" value="{{ form.username.value|default:'' }}">
                                 </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <div class="form-control-material">
-                                <input id="lastName" type="text" class="form-control label-input" placeholder="Last Name"  name="last_name">
-                                <label for="lastName">Last name</label>
-                            </div>
-                            {% if form.last_name.errors %}
-                            <div class="input-group text-danger text-center">
-                                <div class='form-errors '>
-                                    {% for error in form.last_name.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
+                                {% if form.username.help_text %}
+                                <div class="input-group">
+                                    <span id="help_text_{{ form.username.id_for_label }}" class="help-block">{{ form.username.help_text }}</span>
                                 </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <div class="form-control-material">
-                                <input id="email" type="email" class="form-control label-input" placeholder="Email" name="email">
-                                <label for="email">Email address</label>
-                            </div>
-                            {% if form.email.errors %}
-                            <div class="input-group text-danger text-center">
-                                <div class='form-errors '>
-                                    {% for error in form.email.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
+                                {% endif %}
+                                {% if form.username.errors %}
+                                <div class="input-group text-danger text-center">
+                                    <div class='form-errors '>
+                                        {% for error in form.username.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
                                 </div>
+                                {% endif %}
                             </div>
-                            {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <div class="form-control-material">
-                                <input id="password" type="password" class="form-control label-input" placeholder="Password"  name="password1">
-                                <label for="password">Password</label>
-                            </div>
-                            {% if form.password1.help_text %}
-                            <div class="input-group">
-                                <span id="help_text_{{ form.password1.id_for_label }}" class="help-block">{{ form.password1.help_text }}</span>
-                            </div>
-                            {% endif %}
-                            {% if form.password1.errors %}
-                            <div class="input-group text-danger text-center">
-                                <div class='form-errors '>
-                                    {% for error in form.password1.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
+                            <div class="form-group">
+                                <div class="form-control-material">
+                                    <label for="{{ form.first_name.id_for_label }}">First name</label>
+                                    <input name="{{ form.first_name.html_name }}" type="text" class="form-control" id="{{ form.first_name.id_for_label }}" placeholder="Firstname" value="{{ form.first_name.value|default:'' }}">
+                                    <!--<input id="firstName" type="text" class="form-control label-input" placeholder="First Name" name="first_name">-->
                                 </div>
+                                {% if form.first_name.errors %}
+                                <div class="input-group text-danger text-center">
+                                    <div class='form-errors '>
+                                        {% for error in form.first_name.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
-                            {% endif %}
-                        </div>
-                        <div class="form-group">
-                            <div class="form-control-material">
-                                <input id="passwordConfirmation" type="password" class="form-control label-input" placeholder="Password Confirmation" name="password2">
-                                <label for="passwordConfirmation">Re-type password</label>
+                            <div class="form-group">
+                                <div class="form-control-material">
+                                    <label for="last_name">Last name</label>
+                                    <input name="{{ form.last_name.html_name }}" type="text" class="form-control" id="{{ form.last_name.id_for_label }}" placeholder="Lastname" value="{{ form.last_name.value|default:'' }}">
+                                    <!--<input id="lastName" type="text" class="form-control label-input" placeholder="Last Name"  name="last_name">-->
+                                </div>
+                                {% if form.last_name.errors %}
+                                <div class="input-group text-danger text-center">
+                                    <div class='form-errors '>
+                                        {% for error in form.last_name.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
-                            {% if form.password2.help_text %}
-                            <div class="input-group">
-                                <span id="help_text_{{ form.password2.id_for_label }}" class="help-block">{{ form.password2.help_text }}</span>
+                            <div class="form-group">
+                                <div class="form-control-material">
+                                    <label for="{{ form.email.id_for_label }}">Email address</label>
+                                    <input name="{{ form.email.html_name }}" type="email" class="form-control" id="{{ form.email.id_for_label }}" placeholder="Email" value="{{ form.email.value|default:'' }}">
+                                    <!--<input id="email" type="email" class="form-control label-input" placeholder="Email" name="email">-->
+                                </div>
+                                {% if form.email.errors %}
+                                <div class="input-group text-danger text-center">
+                                    <div class='form-errors '>
+                                        {% for error in form.email.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
+                            <div class="form-group">
+                                <div class="form-control-material">
+                                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                                    <input name="{{ form.password1.html_name }}" type="password" class="form-control" id="{{ form.password1.id_for_label }}" placeholder="Password" value="{{ form.password1.value|default:'' }}">
+                                    <!--<input id="password" type="password" class="form-control label-input" placeholder="Password"  name="password1">-->
+                                </div>
+                                {% if form.password1.help_text %}
+                                <div class="input-group">
+                                    <span id="help_text_{{ form.password1.id_for_label }}" class="help-block">{{ form.password1.help_text }}</span>
+                                </div>
+                                {% endif %}
+                                {% if form.password1.errors %}
+                                <div class="input-group text-danger text-center">
+                                    <div class='form-errors '>
+                                        {% for error in form.password1.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <div class="form-control-material">
+                                    <label for="{{ form.password2.id_for_label }}">Re-type password</label>
+                                    <input name="{{ form.password2.html_name }}" type="password" class="form-control" id="{{ form.password2.id_for_label }}" placeholder="Retype password" value="{{ form.password2.value|default:'' }}">
+                                    <!--<input id="passwordConfirmation" type="password" class="form-control label-input" placeholder="Password Confirmation" name="password2">-->
+                                </div>
+                                {% if form.password2.help_text %}
+                                <div class="input-group">
+                                    <span id="help_text_{{ form.password2.id_for_label }}" class="help-block">{{ form.password2.help_text }}</span>
+                                </div>
 
-                            {% endif %}
-                            {% if form.password2.errors %}
-                            <div class="input-group text-danger text-center">
-                                    {% for error in form.password2.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
+                                {% endif %}
+                                {% if form.password2.errors %}
+                                <div class="input-group text-danger text-center">
+                                        {% for error in form.password2.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                </div>
+                                {% endif %}
                             </div>
-                            {% endif %}
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Create an Account</button>
-                        </div>
-                        <a href="{% url 'users:login' %}" class="link-text-color">Have a account? Login</a>
-                    </form>
-                    <!-- //Signup -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Create an Account</button>
+                            </div>
+                            <div>
+                                <a href="/users/login/" class="link-text-color">Have a account? Login</a>
+                            </div>
+                        </form>
+                        <!-- //Signup -->
+                    </div>
                 </div>
             </div>
         </div>
