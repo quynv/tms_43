@@ -14,7 +14,6 @@ class UserCreateForm(UserCreationForm):
         model = User
         fields = ("username","first_name", "last_name", "email", "password1", "password2")
 
-
     def clean_password(self):
         password1 = self.cleaned_data.get('password1')
 
@@ -26,10 +25,13 @@ class UserCreateForm(UserCreationForm):
 
         return password1
 
-
     def save(self, commit=True):
         user = super(UserCreateForm, self).save(commit=False)
         user.email = self.cleaned_data["email"]
         if commit:
             user.save()
         return user
+
+
+class DocumentForm(forms.Form):
+    avatar = forms.FileField(label='Change avatar',)

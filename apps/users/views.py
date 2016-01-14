@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.conf import settings
@@ -18,23 +18,23 @@ from django.contrib.auth.forms import (
         AuthenticationForm,
 )
 from django.views.generic import View
+from django.template import RequestContext
 
 from apps.core.views import BaseView, LoginRequiredMixin
-from apps.users.models import UserProfile
+from apps.users.models import UserProfile, Document
+from apps.users.forms import DocumentForm
 
 # Create your views here.
-
 class SignupUserView(BaseView, CreateView):
     model = django_apps.get_model(settings.AUTH_USER_MODEL)
     form_class = UserCreationForm
     template_name = 'users/sign_up.html'
-
     success_url = reverse_lazy('users:login')
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return HttpResponseRedirect(self.success_url)
-        return super().post(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         self.object = form.save()
@@ -49,6 +49,9 @@ class SignupUserView(BaseView, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         info = {
+            'info': {
+                'title': 'Signup'
+            },
             'page_title': 'Sign Up',
         }
         context.update(info)
@@ -60,20 +63,17 @@ class LoginUserView(BaseView, FormView):
     form_class = AuthenticationForm
     success_url = reverse_lazy('home')
 
-    def post(self, request, *args, **kwargs):
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = authenticate(username=request.POST['username'], password=request.POST['password'])
-            if user is not None:
-                return HttpResponseRedirect(self.success_url)
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(self.success_url)
         else:
-            return super().post(request, *args, **kwargs)
+            return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         info = {
             'info': {
-                'title': 'Login - Student'
+                'title': 'Login'
             },
             'page_title': 'Login',
         }
@@ -96,3 +96,24 @@ class Index(View):
         params  = dict()
         params["name"] = "javimuu"
         return render(request, 'subjects/index.html', params)
+
+
+@login_required
+def change_avatar(request):
+    # Handle file upload
+
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = UserProfile(user = request.user, avatar= request.FILES['avatar'])
+            profile.save()
+
+            # Redirect to the document list after POST
+            return HttpResponseRedirect(reverse('users:avatar'))
+    else:
+        form = DocumentForm() # a empty
+
+    user = get_object_or_404(User, pk = request.user.id)
+
+    # Render list page with the documents and the form
+    return render_to_response('users/setting.html', {'user': user, 'form': form}, context_instance = RequestContext(request))
