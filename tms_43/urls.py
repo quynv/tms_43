@@ -16,10 +16,14 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from apps.users.views import Index
+from django.conf.urls.static import static
+from django.conf import settings
+
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include('apps.users.urls', namespace='users')),
     url(r'^$', Index.as_view(), name='home'),
     url(r'^courses/', include('apps.courses.urls', namespace="courses")),
-]
+ ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
