@@ -102,7 +102,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -117,18 +116,8 @@ STATICFILES_DIRS = (
 )
 
 ###media############
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-
-##
 # URL for @login_required decorator
 LOGIN_URL = reverse_lazy('users:login')
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'brs.framgia@gmail.com'
-EMAIL_HOST_PASSWORD = "1111qqqq@Q"
-EMAIL_PORT = 587

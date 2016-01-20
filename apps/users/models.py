@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     User's profile adding more information for Django Auth User
     """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True, related_name='user_profile')
-    avatar = models.FileField(upload_to=_path_to_avatar, blank=True, default='', max_length=257)
+    avatar = models.ImageField(upload_to=_path_to_avatar, blank=True, default='', max_length=257)
 
     # def account_verified(self):
     #     verified = False
