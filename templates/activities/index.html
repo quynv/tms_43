@@ -1,0 +1,49 @@
+{% extends "layouts/base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container">
+        <h1 class="text-success">Activities</h1>
+        <div class="activities-container">
+            {% if activities %}
+            <ul class="list-group">
+                {% for activity in activities %}
+                <li class="list-group-item">
+                    <h4>
+                        {{ activity.content }}
+                        <small>at {{ activity.created_at|date }}</small>
+                        <button class="close delete-activity" aria-label="Delete" data-toggle="tooltip" title="Delete" data-id="{{ activity.id }}" data-csrf="{{ csrf_token }}">
+                            <span aria-hidden="true">&times</span>
+                        </button>
+                    </h4>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p class="text-warning">No data</p>
+            {% endif %}
+        </div>
+        {% if is_paginated %}
+        <ul class="pagination pagination-centered">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1"><<</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}"><</a></li>
+            {% endif %}
+
+            {% for i in paginator.page_range %}
+                <li {% if page_obj.number == i %} class="active" {% endif %}><a href="?page={{i}}">{{i}}</a></li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">></a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">>></a></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block css %}
+    <link href="{% static 'css/activity.css' %}" rel="stylesheet">
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/activity.js' %}"></script>
+{% endblock %}
