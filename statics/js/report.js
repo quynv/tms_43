@@ -25,8 +25,11 @@ $(document).on('click','#new-report', function(){
 
 
 $(document).on('click', '.delete-report', function(){
+    var action = confirm('Are you sure?');
+    if(action == false) return;
     var id = $(this).data('id');
     var csrf = $(this).data('csrf');
+    var  obj = $(this).parents('.report-content');
     $.ajax({
         url: '/reports/delete/',
         data: {id: id, csrfmiddlewaretoken: csrf},
@@ -35,6 +38,7 @@ $(document).on('click', '.delete-report', function(){
         success: function(data){
             if(data.success == 1){
                Notify( data.message, null, null, "Success");
+                obj.remove();
             } else {
                 Notify( data.message, null, null, "Danger");
             }
