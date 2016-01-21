@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="/reports/">List report</a></li>
+            <li><a href="/reports/{{ report.id }}/detail">View report {{ report.id }}</a></li>
+        </ol>
+        <div class="panel panel-default">
+            <div class="report-content-container" id="report-modal">
+                <div class="report-header">
+                    <h4>
+                        <a href="#">
+                            <img src="{% static "images/people/110/guy-1.jpg" %}" width="60px" height="60px">
+                            {{ report.user.username }}
+                        </a>
+                        <small>
+                            at {{ report.created_at.date }}
+                        <span data-placement="top" data-toggle="tooltip" title="Edit" class="report-menu">
+                            <i class="glyphicon glyphicon-chevron-down" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true"
+                               id="dropdownItem{{ report.id }}"></i>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownItem{{ report.id }}">
+                                <li><a href="/reports/{{ report.id }}/detail">Edit this report</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#" class="delete-report" data-id="{{ report.id }}" data-csrf="{{ csrf_token }}">Delete this report</a></li>
+                            </ul>
+                        </span>
+
+                        </small>
+
+                    </h4>
+                </div>
+                <hr>
+                <div class="panel-body">
+                    <p class="form-report-title">{{ report.title }}</p>
+
+                    <p class="form-report-content">{{ report.content }}</p>
+                    <hr>
+                    <p> tag:
+                        {% for user in report.tags.all %}
+                            <a href="#">@{{ user.username }}</a>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block css %}
+    <link href="{% static 'css/report.css' %}" rel="stylesheet">
+{% endblock %}
