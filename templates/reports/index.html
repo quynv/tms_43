@@ -1,0 +1,88 @@
+{% extends "layouts/base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="/reports/">List report</a></li>
+        </ol>
+        <div class="nav">
+            <button type="button" class="btn btn-white right" data-toggle="modal" data-target="#ReportModal">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new report
+            </button>
+        </div>
+        <div class="panel panel-default" id="report-container">
+            <div class="panel-body">
+                {% for report in reports %}
+                <div class="col-lg-4 report-content">
+                    <div class="report-item">
+                        <div class="report-header">
+                            <h4>
+                                <a href="#">
+                                <img src="{% static "images/people/110/guy-1.jpg" %}" width="60px" height="60px">
+                                QUYNV
+                                </a>
+                                <small>
+                                    at {{ report.created_at.date}}
+                                    <span data-placement="top" data-toggle="tooltip" title="Edit" class="report-menu">
+                                        <i class="glyphicon glyphicon-chevron-down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="dropdownItem{{ report.id }}"></i>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownItem{{ report.id }}">
+                                            <li><a href="/reports/{{ report.id }}/edit">Edit this report</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#" class="delete-report" data-id="{{ report.id }}" data-csrf="{{ csrf_token }}">Delete this report</a></li>
+                                        </ul>
+                                    </span>
+                                </small>
+
+                            </h4>
+                        </div>
+                        <hr>
+                        <div class="report-body">
+                            <h3>{{ report.title }}</h3>
+                            <p>
+                                {{ report.content }}
+                                <a href="/reports/{{ report.id }}/detail">view detail</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if is_paginated %}
+        <ul class="pagination pagination-centered">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1"><<</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}"><</a></li>
+            {% endif %}
+
+            {% for i in paginator.page_range %}
+                <li {% if page_obj.number == i %} class="active" {% endif %}><a href="?page={{i}}">{{i}}</a></li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">></a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">>></a></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+        {% include "reports/report-modal.html" %}
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/report.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.selectpicker').selectpicker({
+              style: 'btn-default',
+              size: 4
+            });
+        })
+    </script>
+{% endblock %}
+{% block css %}
+    <link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/report.css' %}" rel="stylesheet">
+{% endblock %}
