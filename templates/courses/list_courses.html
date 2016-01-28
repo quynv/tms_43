@@ -3,27 +3,42 @@
 {% block 'css' %}{% endblock %}
 
 {% block content %}
-<center><h1>List of Courses</h1></center>
+    <center><h1>List of Courses</h1></center>
+    <div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
+        <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateCourseModal">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new course
+        </button>
+    </div>
 
-{% for course in course_list %}
-<div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4><a href="/courses/{{ course.id }}">{{ course.name }}</a></h4>
-        </div>
-        <div class="panel-body">
-            {{ course.description }}
-        </div>
-        <div class="panel-footer" style="text-align:right">
-            {% if course.status == 'open' %}
-            <button type="button" class="btn btn-success disabled">Opening</button>
-            {% else %}
-            <button type="button" class="btn btn-default disabled">Closed</button>
-            {% endif %}
+    {% for course in course_list %}
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><a href="/courses/{{ course.id }}">{{ course.name }}</a></h4>
+            </div>
+            <div class="panel-body">
+                {{ course.description }}
+            </div>
+            <div class="panel-footer">
+                <div style="text-align:left">
+                    <div type="button" class="glyphicon glyphicon-pencil" style="cursor:pointer" title="Edit"
+                         data-toggle="modal" data-target="#EditCourseModal"></div>
+                    <div type="button" class="glyphicon glyphicon-remove" style="cursor:pointer" title="Delete"
+                         data-toggle="modal" data-target="#DeleteCourseModal"></div>
+                </div>
+                <div style="text-align:right">
+                    {% if course.status == 'open' %}
+                    <button type="button" class="btn btn-success disabled">Opening</button>
+                    {% else %}
+                    <button type="button" class="btn btn-default disabled">Closed</button>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
+
+    {% include "courses/course_new.html" %}
 {% endblock %}
 
 {% block 'js' %}{% endblock %}
