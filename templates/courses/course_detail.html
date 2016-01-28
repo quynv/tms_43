@@ -3,49 +3,56 @@
 {% block 'css' %}{% endblock %}
 
 {% block content %}
-<center><h1>{{ course.name }}</h1></center>
-<div class="col-xs-12 col-sm-12 col-lg-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            {% if subjects %}
-                {% for subject in subjects %}
-                <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">
-                    <button type="button" class="btn btn-success">{{ subject.name }}</button>
-                </a>
-                {% endfor %}
-            {% else %}
-                <strong>No subjects currently in course.</strong>
-            {%endif%}
-        </div>
-        <div class="panel-body">
-            {{ course.description }}
-        </div>
-    </div>
-</div>
-
-{% if subjects %}
-    <center><h1>View details</h1></center>
-    {% for subject in subjects %}
-    <div class="col-xs-12 col-sm-6 col-lg-4">
+    <center><h1>{{ course.name }}</h1></center>
+    <div class="col-xs-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4><a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">{{ subject.name }}</a></h4>
+                {% if subjects %}
+                    {% for subject in subjects %}
+                    <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">
+                        <button type="button" class="btn btn-success">{{ subject.name }}</button>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <strong>No subjects currently in course.</strong>
+                {%endif%}
             </div>
             <div class="panel-body">
-                {{ subject.description }}
-            </div>
-            <div class="panel-footer" style="text-align:right">
-                {% if subject.status == 'open' %}
-                <button type="button" class="btn btn-success disabled">Opening</button>
-                {% else %}
-                <button type="button" class="btn btn-default disabled">Closed</button>
-                {% endif %}
+                {{ course.description }}
             </div>
         </div>
     </div>
-    {% endfor %}
-{%endif%}
 
+    <div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
+        <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateSubjectModal">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new subject
+        </button>
+    </div>
+
+    {% if subjects %}
+        <center><h1>List of Subjects</h1></center>
+        {% for subject in subjects %}
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">{{ subject.name }}</a></h4>
+                </div>
+                <div class="panel-body">
+                    {{ subject.description }}
+                </div>
+                <div class="panel-footer" style="text-align:right">
+                    {% if subject.status == 'open' %}
+                    <button type="button" class="btn btn-success disabled">Opening</button>
+                    {% else %}
+                    <button type="button" class="btn btn-default disabled">Closed</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    {% include "subjects/subject_new.html" %}
 {% endblock %}
 
-{% block 'js' %}{% endblock %}
+{% block js %}{% endblock %}
