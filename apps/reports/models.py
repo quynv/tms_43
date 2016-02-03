@@ -16,6 +16,6 @@ class Tag(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
 
-    class Meta:
-        auto_created = True
+    # class Meta:
+    #     auto_created = True
 

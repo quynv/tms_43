@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+
+{% block 'css' %}{% endblock %}
+
+{% block content %}
+
+    <center><h1>Edit Course | <a href="/courses/{{ course.id }}">{{ course.name }}</a></h1></center>
+
+    <form id="course_update_form" action="/courses/{{ course.id }}/edit_course/" method="POST">
+        {% csrf_token %}
+        <div class="name form-group static required">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ course.name }}">
+        </div>
+        <div class="description form-group static required">
+            <label>Description</label><br/>
+            <textarea rows="4" class="form-control" style="resize: vertical;" name="description">{{ course.description }}</textarea>
+        </div>
+        <div class="status form-group static required">
+            <label for="status">Status</label>
+            <select id="status" name="status" class="form-control">
+                {% if course.status == 'open' %}
+                    <option value="open" selected>Opening</option>
+                    <option value="close">Closed</option>
+                {% else %}
+                    <option value="open">Opening</option>
+                    <option value="close" selected>Closed</option>
+                {% endif %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" id="update-course">Save changes</button>
+    </form>
+
+{% endblock %}
+
+{% block 'js' %}{% endblock %}

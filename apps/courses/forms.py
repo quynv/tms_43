@@ -6,7 +6,7 @@ from apps.subjects.models import Subject
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'status']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'description': forms.Textarea(
