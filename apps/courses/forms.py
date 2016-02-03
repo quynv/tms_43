@@ -2,7 +2,6 @@ from django import forms
 from .models import Course
 from apps.subjects.models import Subject
 
-
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
@@ -10,8 +9,10 @@ class CourseForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'description': forms.Textarea(
-                attrs={'rows': 15, 'class': 'form-control', 'style': 'resize:vertical;',
+                attrs={'rows': 10, 'class': 'form-control', 'style': 'resize:vertical;',
                     'placeholder': 'Write some thing...'}),
+            'status': forms.Select(
+                            attrs={'class': 'form-control selector', 'title': 'Status'})
         }
 
     def __init__(self, *args, **kwargs):

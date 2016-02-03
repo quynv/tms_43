@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 import json
 from django.core.urlresolvers import reverse_lazy
+from django.http import Http404
 
 from .models import Course
 from .forms import CourseForm
@@ -89,9 +90,10 @@ class CourseUpdate(generic.UpdateView):
     success_url = '/courses/'
 
 
-def delete(request, pk):
-    Course.objects.get(pk=pk).delete()
-    return HttpResponseRedirect("/courses/")
+class CourseDelete(generic.DeleteView):
+    def get(self, request, pk):
+        Course.objects.get(pk=pk).delete()
+        return HttpResponseRedirect("/courses/")
 
 
 def subject(request, course_id, subject_id):
