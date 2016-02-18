@@ -9,5 +9,11 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/delete_course/$', views.CourseDelete.as_view(), name='course-delete'),
     url(r'^(?P<course_id>[0-9]+)/subjects/(?P<pk>[0-9]+)/$', views.SubjectDetail.as_view(), name='subject-detail'),
     url(r'^(?P<course_id>[0-9]+)/subjects/(?P<pk>[0-9]+)/edit_subject/$', views.SubjectUpdate.as_view(), name='subject-edit'),
-    url(r'^(?P<course_id>[0-9]+)/subjects/(?P<pk>[0-9]+)/delete_subject/$', views.SubjectDelete.as_view(), name='subject-delete')
+    url(r'^(?P<course_id>[0-9]+)/subjects/(?P<pk>[0-9]+)/delete_subject/$', views.SubjectDelete.as_view(), name='subject-delete'),
+    url(r'^(?P<course_id>[0-9]+)/subjects/(?P<subject_id>[0-9]+)/tasks/(?P<pk>[0-9]+)/edit_task/$',
+        views.TaskUpdate.as_view(), name='task-edit'),
+    url(r'^(?P<course_id>[0-9]+)/subjects/(?P<subject_id>[0-9]+)/tasks/(?P<pk>[0-9]+)/delete_task/$',
+        views.TaskDelete.as_view(), name='task-delete'),
+    url(r'^(?P<course_id>[0-9]+)/subjects/(?P<subject_id>[0-9]+)/tasks/(?P<pk>[0-9]+)/task_change_status/$',
+        views.TaskChangeStatus.as_view(), name='task-change-status')
 ]

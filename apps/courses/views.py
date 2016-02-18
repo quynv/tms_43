@@ -12,8 +12,9 @@ from django.http import Http404
 
 from .models import Course
 from .forms import CourseForm
-from .forms import SubjectForm
+from .forms import SubjectForm, TaskForm
 from apps.subjects.models import Subject
+from apps.tasks.models import Task
 
 
 class IndexView(generic.ListView):
@@ -102,7 +103,34 @@ class SubjectDetail(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SubjectDetail, self).get_context_data(**kwargs)
+        context['form'] = TaskForm
+        context['tasks'] = Task.objects.filter(subject=self.object)
+        context['course_id'] = self.kwargs['course_id']
         return context
+
+    def post(self, request, pk, **kwargs):
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            object = Task(
+                name=form.cleaned_data.get('name'),
+                description=form.cleaned_data.get('description'),
+            )
+            object.save()
+            object.subject.add(Subject.objects.get(pk=pk))
+            return HttpResponse(
+                json.dumps({
+                    'success': 1
+                }),
+                content_type="application/json"
+            )
+        else:
+            return HttpResponse(
+                json.dumps({
+                    'success': 0,
+                    'errors': dict(form.errors.items()),
+                }),
+                content_type="application/json"
+            )
 
 
 class SubjectUpdate(generic.UpdateView):
@@ -119,4 +147,38 @@ class SubjectDelete(generic.DeleteView):
         Subject.objects.get(pk=pk).delete()
         course_id = self.kwargs['course_id']
         url = reverse('courses:course-detail', kwargs={'pk': course_id})
+        return HttpResponseRedirect(url)
+
+
+class TaskUpdate(generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'tasks/task_edit.html'
+    def get_success_url(self, **kwargs):
+        course_id = self.kwargs['course_id']
+        subject_id = self.kwargs['subject_id']
+        return reverse('courses:subject-detail', kwargs={'course_id' : course_id, 'pk' : subject_id})
+
+
+class TaskDelete(generic.DeleteView):
+    def get(self, request, pk, **kwargs):
+        Task.objects.get(pk=pk).delete()
+        course_id = self.kwargs['course_id']
+        subject_id = self.kwargs['subject_id']
+        url = reverse('courses:subject-detail', kwargs={'course_id' : course_id, 'pk' : subject_id})
+        return HttpResponseRedirect(url)
+
+
+class TaskChangeStatus(generic.UpdateView):
+    def get(self, request, pk, **kwargs):
+        # Task.objects.get(pk=pk).delete()
+        task = Task.objects.get(pk=pk)
+        if task.status == 'finish':
+            task.status = 'doing'
+        else:
+            task.status = 'finish'
+        task.save()
+        course_id = self.kwargs['course_id']
+        subject_id = self.kwargs['subject_id']
+        url = reverse('courses:subject-detail', kwargs={'course_id' : course_id, 'pk' : subject_id})
         return HttpResponseRedirect(url)
