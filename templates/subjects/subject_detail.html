@@ -4,11 +4,61 @@
 
 {% block content %}
 
-<center><h1>View details</h1></center>
+<center><h1>{{ subject.name }}</h1></center>
+
+<div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
+    <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateTaskModal">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new task
+    </button>
+</div>
+
+{% if tasks %}
+<div class="col-xs-12 col-sm-12 col-lg-12">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.name }}</td>
+            <td>{{ task.description }}</td>
+            <td>
+                {% if task.status == 'finish' %}
+                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/task_change_status/"
+                   onclick="return confirm('Are you sure you want to change status this task?')">
+                    <button type="button" class="btn btn-success" title="Change status">Finish</button>
+                </a>
+                {% else %}
+                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/task_change_status/"
+                   onclick="return confirm('Are you sure you want to change status this task?')">
+                    <button type="button" class="btn btn-default" title="Change status">Doing</button>
+                </a>
+                {% endif %}
+            </td>
+            <td>
+                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/edit_task/"
+                   class="glyphicon glyphicon-pencil" title="Edit"></a>
+                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/delete_task/"
+                   class="glyphicon glyphicon-remove" title="Delete"
+                   onclick="return confirm('Are you sure you want to delete this task?')"></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
 <div class="col-xs-12 col-sm-12 col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            {{ subject.name }}
+            Decription
         </div>
         <div class="panel-body">
             {{ subject.description }}
@@ -16,6 +66,7 @@
     </div>
 </div>
 
+{% include "tasks/task_new.html" %}
 {% endblock %}
 
 {% block 'js' %}{% endblock %}
