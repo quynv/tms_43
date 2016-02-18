@@ -16,12 +16,9 @@ class IndexView(generic.ListView):
         context = super(IndexView, self).get_context_data(**kwargs)
         return context
 
-
-class DeleteView(generic.View):
-
-    def post(self, *args, **kwargs):
-        id = self.request.POST.get('id')
-        # report = Report.objects.filter(id=id, user_id=request.user.id);
+    def post(self, request):
+        id = request.POST.get('id')
+        # activity = Activity.objects.filter(id=id, user_id=request.user.id);
         activity = Activity.objects.get(pk=id)
         if activity:
             activity.delete()

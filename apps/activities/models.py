@@ -11,8 +11,3 @@ class Activity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
 
 
-
-
-
-
-

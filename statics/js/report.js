@@ -25,6 +25,8 @@ $(document).on('click','#new-report', function(){
 
 
 $(document).on('click', '.delete-report', function(){
+    var action = confirm('Are you sure?');
+    if(action == false) return;
     var id = $(this).data('id');
     var csrf = $(this).data('csrf');
     var  obj = $(this).parents('.report-content');
