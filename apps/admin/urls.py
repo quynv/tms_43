@@ -1,0 +1,24 @@
+from django.conf.urls import url
+from django.contrib.auth.decorators import permission_required
+from . import views
+
+loginUrl = '/admin/login'
+
+urlpatterns = [
+    url(r'^$', permission_required('is_superuser', login_url=loginUrl)(views.ListCourseView.as_view()), name='index'),
+    url(r'^courses/$', permission_required('is_superuser', login_url=loginUrl)(views.ListCourseView.as_view()), name='listcourse'),
+    url(r'^subjects/$', permission_required('is_superuser', login_url=loginUrl)(views.ListSubjectView.as_view()), name='listsubject'),
+
+    url(r'^courses/new/$', permission_required('is_superuser', login_url=loginUrl)(views.CreateCourseView.as_view()), name='createcourse'),
+    url(r'^courses/(?P<pk>[0-9]+)/update/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateCourseView.as_view()), name='updatecourse'),
+    url(r'^courses/delete/$', permission_required('is_superuser', login_url=loginUrl)(views.DeleteCourseView.as_view()), name='deletecourse'),
+
+    url(r'^subjects/new/$', permission_required('is_superuser', login_url=loginUrl)(views.CreateSubjectView.as_view()), name='createsubject'),
+    url(r'^subjects/(?P<pk>[0-9]+)/update/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateSubjectView.as_view()), name='updatesubject'),
+    url(r'^subjects/delete/$', permission_required('is_superuser', login_url=loginUrl)(views.DeleteSubjectView.as_view()), name='deletesubject'),
+
+    url(r'^login/$', views.LoginView.as_view(), name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout',
+                        {'next_page': '/admin/login/'}, name='logout'),
+]
+
