@@ -96,13 +96,27 @@ class CourseDelete(generic.DeleteView):
         return HttpResponseRedirect("/courses/")
 
 
-def subject(request, course_id, subject_id):
-    context = RequestContext(request)
-    subject_id = subject_id
-    context_dict = {'subject_id': subject_id}
-    try:
-        subject = Subject.objects.get(id=subject_id)
-        context_dict['subject'] = subject
-    except Subject.DoesNotExist:
-        pass
-    return render_to_response('subjects/subject_detail.html', context_dict, context)
+class SubjectDetail(generic.DetailView):
+    model = Subject
+    template_name = 'subjects/subject_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SubjectDetail, self).get_context_data(**kwargs)
+        return context
+
+
+class SubjectUpdate(generic.UpdateView):
+    model = Subject
+    form_class = SubjectForm
+    template_name = 'subjects/subject_edit.html'
+    def get_success_url(self, **kwargs):
+        course_id = self.kwargs['course_id']
+        return reverse('courses:course-detail', kwargs={'pk' : course_id})
+
+
+class SubjectDelete(generic.DeleteView):
+    def get(self, request, pk, **kwargs):
+        Subject.objects.get(pk=pk).delete()
+        course_id = self.kwargs['course_id']
+        url = reverse('courses:course-detail', kwargs={'pk': course_id})
+        return HttpResponseRedirect(url)
