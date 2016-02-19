@@ -1,0 +1,31 @@
+{% extends 'admin/layouts/base.html' %}
+
+{% block content %}
+
+    <h1>Edit Subject</h1>
+
+    <form id="course_form" action="" method="POST">
+        {% csrf_token %}
+        <div class="name form-group static required">
+            {{ form.name }}
+            {% if form.name.errors %}
+                <span class="text-danger">
+                    {% for error in form.name.errors %}{{ error }}{% endfor %}
+                </span>
+            {% endif %}
+        </div>
+        <div class="description form-group static required">
+            {{ form.description }}
+            {% if form.description.errors %}
+                <span class="text-danger">
+                    {% for error in form.description.errors %}{{ error }}{% endfor %}
+                </span>
+            {% endif %}
+        </div>
+        <div class="status form-group static required">
+            {{ form.status }}
+        </div>
+        <button type="submit" class="btn btn-primary" id="update-course">Save changes</button>
+    </form>
+
+{% endblock %}

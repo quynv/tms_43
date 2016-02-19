@@ -19,10 +19,8 @@ from apps.users.views import Index
 from django.conf.urls.static import static
 from django.conf import settings
 
-
-
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include('apps.admin.urls', namespace='admin')),
     url(r'^users/', include('apps.users.urls', namespace='users')),
     url(r'^reports/', include('apps.reports.urls', namespace="reports")),
     url(r'^activities/', include('apps.activities.urls', namespace="activities")),

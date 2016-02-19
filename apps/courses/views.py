@@ -1,18 +1,13 @@
 from django.views import generic
-from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import HttpResponse
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
 import json
-from django.core.urlresolvers import reverse_lazy
-from django.http import Http404
 
 from .models import Course
 from .forms import CourseForm
-from .forms import SubjectForm, TaskForm
+from apps.subjects.forms import SubjectForm
+from apps.tasks.forms import TaskForm
 from apps.subjects.models import Subject
 from apps.tasks.models import Task
 

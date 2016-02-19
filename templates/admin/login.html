@@ -1,0 +1,29 @@
+{% extends 'admin/layouts/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+    <form action="" method="POST" class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <div class="form-group {% if field.errors %} has-error {% endif %} has-feedback">
+                <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
+                       value="{{ field.value|default_if_none:'' }}" class="form-control" placeholder="{{ field.name }}">
+                <span class="help-block">{{ field.errors }}</span>
+            </div>
+        {% endfor %}
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+    </form>
+</div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock %}
+{% block css %}
+    <link href="{% static 'admin/css/login.css' %}" rel="stylesheet">
+{% endblock %}
