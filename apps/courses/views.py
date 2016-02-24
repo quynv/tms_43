@@ -9,7 +9,8 @@ from .forms import CourseForm
 from apps.subjects.forms import SubjectForm
 from apps.tasks.forms import TaskForm
 from apps.subjects.models import Subject
-from apps.tasks.models import Task
+from apps.tasks.models import Task, UserTask
+from django.contrib.auth.models import User
 
 
 class IndexView(generic.ListView):
@@ -43,6 +44,7 @@ class IndexView(generic.ListView):
                 content_type="application/json"
             )
 
+
 class DetailView(generic.DetailView):
     model = Course
     template_name = 'courses/course_detail.html'
@@ -57,12 +59,7 @@ class DetailView(generic.DetailView):
     def post(self, request, pk):
         form = SubjectForm(request.POST)
         if form.is_valid():
-            object = Subject(
-                name=form.cleaned_data.get('name'),
-                description=form.cleaned_data.get('description'),
-            )
-            object.save()
-            object.course.add(Course.objects.get(pk=pk))
+            form.save()
             return HttpResponse(
                 json.dumps({
                     'success': 1
@@ -100,6 +97,8 @@ class SubjectDetail(generic.DetailView):
         context = super(SubjectDetail, self).get_context_data(**kwargs)
         context['form'] = TaskForm
         context['tasks'] = Task.objects.filter(subject=self.object)
+        context['usertasks'] = UserTask.objects.filter(user_id = self.request.user)
+        # context['usertasks'] = UserTask.objects.filter(user_id = self.request.user, task_id = context['tasks'])
         context['course_id'] = self.kwargs['course_id']
         return context
 
@@ -164,15 +163,20 @@ class TaskDelete(generic.DeleteView):
         return HttpResponseRedirect(url)
 
 
-class TaskChangeStatus(generic.UpdateView):
+class UserTaskChangeStatus(generic.UpdateView):
     def get(self, request, pk, **kwargs):
-        # Task.objects.get(pk=pk).delete()
-        task = Task.objects.get(pk=pk)
-        if task.status == 'finish':
-            task.status = 'doing'
+        user = User.objects.get(pk = request.user.id)
+        task = Task.objects.get(pk = pk)
+        if UserTask.objects.filter(task = task, user = user):
+            usertask = UserTask.objects.get(task = task, user = user)
+            if usertask:
+                if usertask.status == 'finish':
+                    usertask.status = 'doing'
+                else:
+                    usertask.status = 'finish'
         else:
-            task.status = 'finish'
-        task.save()
+            usertask = UserTask(task = task, user = user, status = "finish")
+        usertask.save()
         course_id = self.kwargs['course_id']
         subject_id = self.kwargs['subject_id']
         url = reverse('courses:subject-detail', kwargs={'course_id' : course_id, 'pk' : subject_id})
