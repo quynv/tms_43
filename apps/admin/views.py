@@ -4,11 +4,15 @@ from django.shortcuts import HttpResponseRedirect
 from django.contrib.admin.forms import AdminAuthenticationForm
 from django.contrib.auth import login, logout
 from django.views import generic
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 from apps.courses.models import Course
 from apps.subjects.models import Subject
-
 from apps.courses.forms import CourseForm
 from apps.subjects.forms import SubjectForm
+from apps.users.models import UserProfile
+from .forms import UserForm
 import json
 # Create your views here.
 
@@ -141,3 +145,75 @@ class DeleteSubjectView(generic.View):
                     content_type="application/json"
                 )
 
+
+class CreateUserView(generic.CreateView):
+    model = User
+    form_class = UserForm
+    template_name = 'admin/users/new.html'
+    success_url = '/admin/users'
+
+    def form_valid(self, form, **kwargs):
+        self.object = form.save()
+        profile = UserProfile.objects.create(user=self.object)
+        profile.save()
+
+        messages.success(self.request, "You signed up successfully,\
+                                    You can log in now.")
+
+        return HttpResponseRedirect(self.success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateUserView, self).get_context_data(**kwargs)
+        return context
+
+
+class UpdateUserView(generic.UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'admin/users/edit.html'
+    success_url = '/admin/users'
+
+
+class ListUserView(generic.ListView):
+    template_name = 'admin/users/index.html'
+    model = User
+    context_object_name = 'users'
+    paginate_by = 20
+
+    def get_queryset(self):
+        type = self.request.GET.get('type')
+        is_superuser = 1
+        if type == 'trainee':
+            is_superuser = 0
+        return User.objects.filter(is_superuser=is_superuser).order_by('-date_joined')
+
+    def get_context_data(self, **kwargs):
+        context = super(ListUserView, self).get_context_data(**kwargs)
+        type = self.request.GET.get('type')
+        if not type:
+            type = 'supervisor'
+        context['type'] = type
+        return context
+
+
+class DeleteUserView(generic.View):
+    def post(self, *args, **kwargs):
+            id = self.request.POST.get('id')
+            user = User.objects.get(pk=id)
+            if user:
+                user.delete()
+                return HttpResponse(
+                    json.dumps({
+                        'success': 1,
+                        'message': 'User has been removed'
+                    }),
+                    content_type="application/json"
+                )
+            else:
+                return HttpResponse(
+                    json.dumps({
+                        'success': 0,
+                        'message': 'User not found with id: '+id
+                    }),
+                    content_type="application/json"
+                )
