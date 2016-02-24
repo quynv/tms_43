@@ -22,12 +22,12 @@ from django.template import RequestContext
 
 from apps.core.views import BaseView, LoginRequiredMixin
 from apps.users.models import UserProfile, Document
-from apps.users.forms import DocumentForm
+from apps.users.forms import DocumentForm, UserCreateForm, UserEditForm
 
 # Create your views here.
 class SignupUserView(BaseView, CreateView):
     model = django_apps.get_model(settings.AUTH_USER_MODEL)
-    form_class = UserCreationForm
+    form_class = UserCreateForm
     template_name = 'users/sign_up.html'
     success_url = reverse_lazy('users:login')
 
@@ -101,19 +101,39 @@ class Index(View):
 @login_required
 def change_avatar(request):
     # Handle file upload
+    user = get_object_or_404(User, pk = request.user.id)
 
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
+        form = UserEditForm(instance=user)
+        ava_form = DocumentForm(request.POST, request.FILES)
+        if ava_form.is_valid():
             profile = UserProfile(user = request.user, avatar= request.FILES['avatar'])
             profile.save()
 
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse('users:avatar'))
     else:
-        form = DocumentForm() # a empty
+        form = UserEditForm(instance=user)
+        ava_form = DocumentForm
 
-    user = get_object_or_404(User, pk = request.user.id)
 
     # Render list page with the documents and the form
-    return render_to_response('users/setting.html', {'user': user, 'form': form}, context_instance = RequestContext(request))
+    return render_to_response('users/setting.html', {'user': user, 'form': form , 'ava_form': ava_form}, context_instance = RequestContext(request))
+
+
+@login_required
+def edit_profile(request):
+    # Handle file upload
+    user = get_object_or_404(User, pk = request.user.id)
+    profile_form = UserEditForm(instance=user)
+    if request.method == 'POST':
+        user = get_object_or_404(User, pk = request.user.id)
+        profile_form = UserEditForm(request.POST, instance=user)
+        if profile_form.is_valid():
+            profile_form.save()
+
+            # Redirect to the document list after POST
+            return HttpResponseRedirect(reverse('users:setting'))
+
+    # Render list page with the documents and the form
+    return render_to_response('users/setting.html', {'user': user, 'form': profile_form}, context_instance = RequestContext(request))

@@ -23,7 +23,7 @@
                             <div class="form-group ">
                                 <div class="form-control-material">
                                     <label for="{{ form.username.id_for_label }}">Username</label>
-                                    <input name="{{ form.username.html_name }}" type="text" class="form-control" id="{{ form.username.id_for_label }}" placeholder="Username" value="{{ form.username.value|default:'' }}">
+                                    {{form.username}}
                                 </div>
                                 {% if form.username.help_text %}
                                 <div class="input-group">
@@ -43,8 +43,7 @@
                             <div class="form-group">
                                 <div class="form-control-material">
                                     <label for="{{ form.first_name.id_for_label }}">First name</label>
-                                    <input name="{{ form.first_name.html_name }}" type="text" class="form-control" id="{{ form.first_name.id_for_label }}" placeholder="Firstname" value="{{ form.first_name.value|default:'' }}">
-                                    <!--<input id="firstName" type="text" class="form-control label-input" placeholder="First Name" name="first_name">-->
+                                    {{form.first_name}}
                                 </div>
                                 {% if form.first_name.errors %}
                                 <div class="input-group text-danger text-center">
@@ -59,8 +58,7 @@
                             <div class="form-group">
                                 <div class="form-control-material">
                                     <label for="last_name">Last name</label>
-                                    <input name="{{ form.last_name.html_name }}" type="text" class="form-control" id="{{ form.last_name.id_for_label }}" placeholder="Lastname" value="{{ form.last_name.value|default:'' }}">
-                                    <!--<input id="lastName" type="text" class="form-control label-input" placeholder="Last Name"  name="last_name">-->
+                                    {{form.last_name}}
                                 </div>
                                 {% if form.last_name.errors %}
                                 <div class="input-group text-danger text-center">
@@ -75,8 +73,7 @@
                             <div class="form-group">
                                 <div class="form-control-material">
                                     <label for="{{ form.email.id_for_label }}">Email address</label>
-                                    <input name="{{ form.email.html_name }}" type="email" class="form-control" id="{{ form.email.id_for_label }}" placeholder="Email" value="{{ form.email.value|default:'' }}">
-                                    <!--<input id="email" type="email" class="form-control label-input" placeholder="Email" name="email">-->
+                                    {{form.email}}
                                 </div>
                                 {% if form.email.errors %}
                                 <div class="input-group text-danger text-center">
@@ -90,9 +87,8 @@
                             </div>
                             <div class="form-group">
                                 <div class="form-control-material">
-                                    <label for="{{ form.password1.id_for_label }}">Password</label>
-                                    <input name="{{ form.password1.html_name }}" type="password" class="form-control" id="{{ form.password1.id_for_label }}" placeholder="Password" value="{{ form.password1.value|default:'' }}">
-                                    <!--<input id="password" type="password" class="form-control label-input" placeholder="Password"  name="password1">-->
+                                    <label for="{{ form.password.id_for_label }}">Password</label>
+                                    {{form.password1}}
                                 </div>
                                 {% if form.password1.help_text %}
                                 <div class="input-group">
@@ -111,9 +107,8 @@
                             </div>
                             <div class="form-group">
                                 <div class="form-control-material">
-                                    <label for="{{ form.password2.id_for_label }}">Re-type password</label>
-                                    <input name="{{ form.password2.html_name }}" type="password" class="form-control" id="{{ form.password2.id_for_label }}" placeholder="Retype password" value="{{ form.password2.value|default:'' }}">
-                                    <!--<input id="passwordConfirmation" type="password" class="form-control label-input" placeholder="Password Confirmation" name="password2">-->
+                                    <label for="{{ form.confirmation.id_for_label }}">Re-type password</label>
+                                    {{form.password2}}
                                 </div>
                                 {% if form.password2.help_text %}
                                 <div class="input-group">
