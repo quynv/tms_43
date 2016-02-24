@@ -66,3 +66,57 @@ $(document).on('click', '.delete-user', function(){
         }
     })
 });
+
+$(document).on('click', '.update-course', function(){
+    var id = $(this).data('id');
+    var csrf = $(this).data('csrf');
+    var  obj = $(this)
+    $.ajax({
+        url: '/admin/courses/change_status/',
+        data: {id: id, csrfmiddlewaretoken: csrf},
+        method: 'post',
+        dataType: 'json',
+        success: function(data){
+            if(data.success == 1){
+                if(data.status=='open'){
+                    obj.removeClass('btn-default');
+                    obj.addClass('btn-success');
+                    obj.text(data.message)
+                }else{
+                    obj.removeClass('btn-success');
+                    obj.addClass('btn-default');
+                    obj.text(data.message)
+                }
+            } else {
+                alert(data.message);
+            }
+        }
+    })
+});
+
+$(document).on('click', '.update-subject', function(){
+    var id = $(this).data('id');
+    var csrf = $(this).data('csrf');
+    var  obj = $(this)
+    $.ajax({
+        url: '/admin/subjects/change_status/',
+        data: {id: id, csrfmiddlewaretoken: csrf},
+        method: 'post',
+        dataType: 'json',
+        success: function(data){
+            if(data.success == 1){
+                if(data.status=='open'){
+                    obj.removeClass('btn-default');
+                    obj.addClass('btn-success');
+                    obj.text(data.message)
+                }else{
+                    obj.removeClass('btn-success');
+                    obj.addClass('btn-default');
+                    obj.text(data.message)
+                }
+            } else {
+                alert(data.message);
+            }
+        }
+    })
+});
