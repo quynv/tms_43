@@ -29,22 +29,29 @@
             <td>{{ task.name }}</td>
             <td>{{ task.description }}</td>
             <td>
-                {% if task.status == 'finish' %}
-                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/task_change_status/"
+                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/usertask-change-status/"
                    onclick="return confirm('Are you sure you want to change status this task?')">
-                    <button type="button" class="btn btn-success" title="Change status">Finish</button>
+                    <button type="button" class="btn btn-success" title="Change status">
+                        {% if usertasks %}
+                            {% for usertask in usertasks %}
+                                    {% if usertask.task_id == task.id %}
+                                        {%if usertask.status == "finish" %}
+                                            Finish
+                                        {% else %}
+                                            Doing
+                                        {% endif %}
+                                    {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            Doing
+                        {% endif %}
+                    </button>
                 </a>
-                {% else %}
-                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/task_change_status/"
-                   onclick="return confirm('Are you sure you want to change status this task?')">
-                    <button type="button" class="btn btn-default" title="Change status">Doing</button>
-                </a>
-                {% endif %}
             </td>
             <td>
-                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/edit_task/"
+                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/edit-task/"
                    class="glyphicon glyphicon-pencil" title="Edit"></a>
-                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/delete_task/"
+                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/delete-task/"
                    class="glyphicon glyphicon-remove" title="Delete"
                    onclick="return confirm('Are you sure you want to delete this task?')"></a>
             </td>
