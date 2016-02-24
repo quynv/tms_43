@@ -4,7 +4,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.sqlite3
 # Distribution / packaging
 .Python
 env/
@@ -56,5 +56,5 @@ docs/_build/
 # PyBuilder
 target/
 .idea/
-db.sqlite3
+
 .media/

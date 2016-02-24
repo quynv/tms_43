@@ -1,0 +1,77 @@
+{% extends 'admin/layouts/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="lock-container">
+            <div class=" col-md-8 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                <div class="panel panel-default paper-shadow" data-z="0.5">
+                    <h1 class="text-center">Update user</h1>
+                    <div class="panel-body">
+                        <!-- Signup -->
+                        <form method="post" role="form">
+                            {% csrf_token %}
+                            {% if form.errors %}
+                                <div class="form-group text-danger">
+                                    {{ form.errors }}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group ">
+                                <label for="{{ form.username.id_for_label }}">Username</label>
+                                <input name="{{ form.username.html_name }}" type="text" class="form-control" id="{{ form.username.id_for_label }}" placeholder="Username" value="{{ form.username.value|default:'' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.first_name.id_for_label }}">First name</label>
+                                <input name="{{ form.first_name.html_name }}" type="text" class="form-control" id="{{ form.first_name.id_for_label }}" placeholder="Firstname" value="{{ form.first_name.value|default:'' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last name</label>
+                                <input name="{{ form.last_name.html_name }}" type="text" class="form-control" id="{{ form.last_name.id_for_label }}" placeholder="Lastname" value="{{ form.last_name.value|default:'' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.email.id_for_label }}">Email address</label>
+                                <input name="{{ form.email.html_name }}" type="email" class="form-control" id="{{ form.email.id_for_label }}" placeholder="Email" value="{{ form.email.value|default:'' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.password1.id_for_label }}">Password</label>
+                                <input name="{{ form.password1.html_name }}" type="password" class="form-control" id="{{ form.password1.id_for_label }}" placeholder="Password" value="{{ form.password1.value|default:'' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.password2.id_for_label }}">Re-type password</label>
+                                <input name="{{ form.password2.html_name }}" type="password" class="form-control" id="{{ form.password2.id_for_label }}" placeholder="Retype password" value="{{ form.password2.value|default:'' }}">
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="{{ form.is_superuser.id_for_label }}">Select type</label>
+                                    {{ form.is_superuser }}
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Save change</button>
+                            </div>
+
+                        </form>
+                        <!-- //Signup -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'admin/js/admin.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.selectpicker').selectpicker({
+              style: 'btn-default',
+              size: 4
+            });
+        })
+    </script>
+{% endblock %}
+{% block css %}
+    <link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet">
+{% endblock %}
