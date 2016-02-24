@@ -9,6 +9,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Description</th>
+            <th>Status</th>
             <th>Created</th>
             <th>Action</th>
         </tr>
@@ -19,6 +20,11 @@
             <th scope="row">{{ subject.id }}</th>
             <td>{{ subject.name }}</td>
             <td>{{ subject.description }}</td>
+            <td>
+                <button class="update-subject btn {% if subject.status == 'open' %}btn-success{% else %}btn-default{% endif %} " data-id="{{ subject.id }}" data-csrf="{{ csrf_token }}" data-toggle="tooltip" data-placement="top" title="Click to change status this subject">
+                {% if subject.status == 'open' %}Opening{% else %}Finished{% endif %}
+                </button>
+            </td>
             <td>{{ subject.created_at }}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="...">

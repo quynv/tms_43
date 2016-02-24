@@ -18,7 +18,11 @@
         <tr>
             <th scope="row">{{ course.id }}</th>
             <td>{{ course.name }}</td>
-            <td>{{ course.status }}</td>
+            <td>
+                <button class="update-course btn {% if course.status == 'open' %}btn-success{% else %}btn-default{% endif %} " data-id="{{ course.id }}" data-csrf="{{ csrf_token }}" data-toggle="tooltip" data-placement="top" title="Click to change status this course">
+                {% if course.status == 'open' %}Opening{% else %}Finished{% endif %}
+                </button>
+            </td>
             <td>{{ course.created_at }}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="...">

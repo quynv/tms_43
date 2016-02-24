@@ -86,6 +86,37 @@ class UpdateCourseView(generic.UpdateView):
     success_url = '/admin/'
 
 
+class UpdateStatusCourse(generic.View):
+    def post(self, *args, **kwargs):
+            id = self.request.POST.get('id')
+            course = Course.objects.get(pk=id)
+            message = 'Course not found with id: '+id
+            if course:
+                if course.status == 'open':
+                    course.status = 'close'
+                    message = 'Finished'
+                else:
+                    course.status = 'open'
+                    message = 'Opening'
+                course.save()
+                return HttpResponse(
+                    json.dumps({
+                        'success': 1,
+                        'status': course.status,
+                        'message': message
+                    }),
+                    content_type="application/json"
+                )
+            else:
+                return HttpResponse(
+                    json.dumps({
+                        'success': 0,
+                        'message': message
+                    }),
+                    content_type="application/json"
+                )
+
+
 class DeleteCourseView(generic.View):
     def post(self, *args, **kwargs):
             id = self.request.POST.get('id')
@@ -121,6 +152,37 @@ class UpdateSubjectView(generic.UpdateView):
     form_class = SubjectForm
     template_name = 'admin/subjects/subject_edit.html'
     success_url = '/admin/subjects'
+
+
+class UpdateStatusSubject(generic.View):
+    def post(self, *args, **kwargs):
+            id = self.request.POST.get('id')
+            subject = Subject.objects.get(pk=id)
+            message = 'Subject not found with id: '+id
+            if subject:
+                if subject.status == 'open':
+                    subject.status = 'close'
+                    message = 'Finished'
+                else:
+                    subject.status = 'open'
+                    message = 'Opening'
+                subject.save()
+                return HttpResponse(
+                    json.dumps({
+                        'success': 1,
+                        'status': subject.status,
+                        'message': message
+                    }),
+                    content_type="application/json"
+                )
+            else:
+                return HttpResponse(
+                    json.dumps({
+                        'success': 0,
+                        'message': message
+                    }),
+                    content_type="application/json"
+                )
 
 
 class DeleteSubjectView(generic.View):

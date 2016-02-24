@@ -11,10 +11,12 @@ urlpatterns = [
     url(r'^users/$', permission_required('is_superuser', login_url=loginUrl)(views.ListUserView.as_view()), name='listuser'),
 
     url(r'^courses/new/$', permission_required('is_superuser', login_url=loginUrl)(views.CreateCourseView.as_view()), name='createcourse'),
+    url(r'^courses/change_status/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateStatusCourse.as_view()), name='changecourse'),
     url(r'^courses/(?P<pk>[0-9]+)/update/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateCourseView.as_view()), name='updatecourse'),
     url(r'^courses/delete/$', permission_required('is_superuser', login_url=loginUrl)(views.DeleteCourseView.as_view()), name='deletecourse'),
 
     url(r'^subjects/new/$', permission_required('is_superuser', login_url=loginUrl)(views.CreateSubjectView.as_view()), name='createsubject'),
+    url(r'^subjects/change_status/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateStatusSubject.as_view()), name='changesubject'),
     url(r'^subjects/(?P<pk>[0-9]+)/update/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateSubjectView.as_view()), name='updatesubject'),
     url(r'^subjects/delete/$', permission_required('is_superuser', login_url=loginUrl)(views.DeleteSubjectView.as_view()), name='deletesubject'),
 
