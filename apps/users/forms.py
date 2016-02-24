@@ -9,13 +9,10 @@ class UserCreateForm(UserCreationForm):
     MIN_LENGTH = 6
     MAX_LENGTH = 30
 
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Password'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Confirm password'}))
-
 
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'password1', 'password2']
+        fields = ['username','first_name', 'last_name', 'email', 'password']
         widgets = {
             'username' : forms.TextInput(
                 attrs={'class':'form-control', 'placeholder':'Username'}
@@ -28,28 +25,8 @@ class UserCreateForm(UserCreationForm):
             ),
             'email': forms.EmailInput(
                 attrs={'class':'form-control', 'placeholder':'Email'}
-            ),
-            'password1':forms.PasswordInput(
-                attrs={'class':'form-control', 'placeholder':'Password'}
-            ),
-            'password2':forms.PasswordInput(
-                attrs={'class':'form-control', 'placeholder':'Password'}
-            ),
+            )
         }
-
-
-    # def clean_password1(self):
-    #     password = self.cleaned_data.get('password1')
-    #     # confirmation = self.cleaned_data.get('password2')
-    #
-    #     if len(password) < self.MIN_LENGTH:
-    #         raise ValidationError("The new password must be at least %d characters long." % self.MIN_LENGTH)
-    #
-    #     if len(password) > self.MAX_LENGTH:
-    #         raise ValidationError("The new password must be less than %d characters long." % self.MAX_LENGTH)
-    #
-    #     return self.cleaned_data
-
 
     def save(self, commit=True):
         user = super(UserCreateForm, self).save(commit=False)
@@ -61,7 +38,11 @@ class UserCreateForm(UserCreationForm):
         super(UserCreateForm, self).__init__(*args, **kwargs)
         self.fields['username'].required = True
         self.fields['email'].required = True
+        self.fields['password1'].widget = forms.PasswordInput(attrs={'class':'form-control'})
         self.fields['password1'].required = True
+
+        self.fields['password2'].widget = forms.PasswordInput(attrs={'class':'form-control'})
+        self.fields['password2'].required = True
 
 
 class DocumentForm(forms.Form):
