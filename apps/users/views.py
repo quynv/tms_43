@@ -1,28 +1,64 @@
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import (
+    HttpResponse,
+    HttpResponseRedirect,
+)
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.apps import apps as django_apps
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView, FormView
+from django.views.generic import (
+    DetailView,
+    ListView,
+    FormView,
+    View,
+)
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import (
+    CreateView,
+    UpdateView,
+)
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import (
+    authenticate,
+    login,
+    logout
+)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
         UserCreationForm,
         AuthenticationForm,
 )
-from django.views.generic import View
 from django.template import RequestContext
 
-from apps.core.views import BaseView, LoginRequiredMixin
-from apps.users.models import UserProfile, Document
-from apps.users.forms import DocumentForm, UserCreateForm, UserEditForm
+from apps.core.views import (
+    BaseView,
+    LoginRequiredMixin,
+)
+from apps.users.models import (
+    UserProfile,
+    Document,
+)
+from apps.users.forms import (
+    DocumentForm,
+    UserCreateForm,
+    UserEditForm,
+)
+from apps.courses.models import (
+    Course,
+    UserCourse,
+)
+from apps.subjects.models import (
+    Subject,
+    UserSubject,
+)
+from apps.tasks.models import (
+    Task,
+    UserTask,
+)
 
 # Create your views here.
 class SignupUserView(BaseView, CreateView):
@@ -97,6 +133,32 @@ class Index(View):
         params["name"] = "javimuu"
         return render(request, 'subjects/index.html', params)
 
+
+class UserProfile(ListView):
+    model = Course
+    template_name = 'users/profile.html'
+    context_object_name = 'courses'
+    queryset = Course.objects.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        return context
+
+    def get(self, request):
+        user = get_object_or_404(User, pk= request.user.id)
+        user_courses = get_object_or_404(UserCourse, user_id = request.user.id)
+        course = get_object_or_404(Course, pk = user_courses.course_id)
+        user_subjects= UserSubject.objects.filter(user_id = request.user.id)
+        subjects = Subject.objects.filter(course = course)
+        tasks = Task.objects.filter(subject= subjects)
+        user_tasks = UserTask.objects.filter(user_id = request.user.id)
+        params = dict()
+        params["user"] = user
+        params["course"] = course
+        params["subjects"] = subjects
+        params['tasks'] = tasks
+        params['user_tasks'] = user_tasks
+        return render(request, 'users/profile.html', params)
 
 @login_required
 def change_avatar(request):
