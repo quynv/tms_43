@@ -9,7 +9,7 @@ from django.contrib import messages
 
 from apps.courses.models import Course
 from apps.subjects.models import Subject
-from apps.courses.forms import CourseForm
+from apps.admin.forms import AdminCourseForm
 from apps.subjects.forms import SubjectForm
 from apps.users.models import UserProfile
 from .forms import UserForm
@@ -74,14 +74,14 @@ class ListSubjectView(generic.ListView):
 
 class CreateCourseView(generic.CreateView):
     model = Course
-    form_class = CourseForm
+    form_class = AdminCourseForm
     template_name = 'admin/courses/course_new.html'
     success_url = '/admin/'
 
 
 class UpdateCourseView(generic.UpdateView):
     model = Course
-    form_class = CourseForm
+    form_class = AdminCourseForm
     template_name = 'admin/courses/course_edit.html'
     success_url = '/admin/'
 

@@ -1,11 +1,12 @@
 {% extends 'admin/layouts/base.html' %}
-
+{% load staticfiles %}
 {% block content %}
 
     <h1>Create course</h1>
     <form id="course_form" action="" method="POST">
         {% csrf_token %}
         <div class="name form-group static required">
+            <label>Name</label>
             {{ form.name }}
             {% if form.name.errors %}
                 <span class="text-danger">
@@ -14,6 +15,7 @@
             {% endif %}
         </div>
         <div class="description form-group static required">
+            <label>Description</label>
             {{ form.description }}
             {% if form.description.errors %}
                 <span class="text-danger">
@@ -22,9 +24,27 @@
             {% endif %}
         </div>
         <div class="status form-group static required">
+            <label>Status</label>
             {{ form.status }}
+        </div>
+        <div class="status form-group static required">
+            <label>Supervisors</label>
+            {{ form.supervisors }}
         </div>
         <button type="submit" class="btn btn-primary" id="update-course">Create</button>
     </form>
 {% endblock %}
-
+{% block js %}
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.selectpicker').selectpicker({
+              style: 'btn-default',
+              size: 4
+            });
+        })
+    </script>
+{% endblock %}
+{% block css %}
+    <link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet">
+{% endblock %}
