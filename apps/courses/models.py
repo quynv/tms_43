@@ -6,6 +6,7 @@ status_choise = (
         ('close', 'Closed'),
 )
 
+
 class Course(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
@@ -14,11 +15,12 @@ class Course(models.Model):
     # user_id =
     updated_at = models.DateField(auto_now=True)
     created_at = models.DateField(auto_now_add=True)
+    supervisors = models.ManyToManyField(User, blank=True)
 
 
 class UserCourse(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User,null=True,blank=True,related_name="user_courses")
-    course = models.ForeignKey(Course,null=True,blank=True,related_name="courses")
+    user = models.ForeignKey(User, null=True, blank=True, related_name="user_courses")
+    course = models.ForeignKey(Course, null=True, blank=True, related_name="courses")
     updated_at = models.DateField(auto_now=True)
     created_at = models.DateField(auto_now_add=True)
