@@ -31,6 +31,17 @@
                     {% else %}
                     <button type="button" class="btn btn-default disabled">Closed</button>
                     {% endif %}
+                    {% if usercourses %}
+                        {% if course.id not in usercourse %}
+                        <a href="/courses/{{ course.id }}/usercourse-join/">
+                            <button type="button" class="btn btn-success" title="Join"> Join Now? </button>
+                        </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="/courses/{{ course.id }}/usercourse-join/">
+                            <button type="button" class="btn btn-success" title="Join"> Join Now? </button>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -3,18 +3,33 @@
 {% block 'css' %}{% endblock %}
 
 {% block content %}
-<center><h1>{{ course.name }}</h1></center>
+<center>
+    <h1>
+        {{ course.name }}
+        {% if usercourses %}
+            {% if course.id not in usercourse %}
+            <a href="/courses/{{ course.id }}/usercourse-join/">
+                <button type="button" class="btn btn-success" title="Join"> Join Now?</button>
+            </a>
+            {% endif %}
+        {% else %}
+            <a href="/courses/{{ course.id }}/usercourse-join/">
+                <button type="button" class="btn btn-success" title="Join"> Join Now?</button>
+            </a>
+        {% endif %}
+    </h1>
+</center>
 <div class="col-xs-12 col-sm-12 col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
             {% if subjects %}
-            {% for subject in subjects %}
-            <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">
-                <button type="button" class="btn btn-success">{{ subject.name }}</button>
-            </a>
-            {% endfor %}
+                {% for subject in subjects %}
+                    <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">
+                        <button type="button" class="btn btn-success">{{ subject.name }}</button>
+                    </a>
+                {% endfor %}
             {% else %}
-            <strong>No subjects currently in course.</strong>
+                <strong>No subjects currently in course.</strong>
             {%endif%}
         </div>
         <div class="panel-body" style="word-break: break-all;">
@@ -31,34 +46,51 @@
 
 {% if subjects %}
 <center><h1>List of Subjects</h1></center>
-{% for subject in subjects %}
-<div class="col-xs-12 col-sm-6 col-lg-4">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4><a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">{{ subject.name }}</a></h4>
-        </div>
-        <div class="panel-body">
-            {{ subject.description }}
-        </div>
-        <div class="panel-footer" style="text-align:right">
-            <div style="text-align:left">
-                <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/edit-subject/"
-                   class="glyphicon glyphicon-pencil" title="Edit"></a>
-                <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/delete-subject/"
-                   class="glyphicon glyphicon-remove" title="Delete"
-                   onclick="return confirm('Are you sure you want to delete this subject?')"></a>
+    {% for subject in subjects %}
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><a href="/courses/{{ course.id }}/subjects/{{ subject.id }}">{{ subject.name }}</a></h4>
             </div>
-            <div style="text-align:right">
-                {% if subject.status == 'open' %}
-                <button type="button" class="btn btn-success disabled">Opening</button>
-                {% else %}
-                <button type="button" class="btn btn-default disabled">Closed</button>
-                {% endif %}
+            <div class="panel-body">
+                {{ subject.description }}
+            </div>
+            <div class="panel-footer" style="text-align:right">
+                <div style="text-align:left">
+                    <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/edit-subject/"
+                       class="glyphicon glyphicon-pencil" title="Edit"></a>
+                    <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/delete-subject/"
+                       class="glyphicon glyphicon-remove" title="Delete"
+                       onclick="return confirm('Are you sure you want to delete this subject?')"></a>
+                </div>
+                <div style="text-align:right">
+                    {% if subject.status == 'open' %}
+                        <button type="button" class="btn btn-success disabled">Opening</button>
+                    {% else %}
+                        <button type="button" class="btn btn-default disabled">Closed</button>
+                    {% endif %}
+                    <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/usersubject-change-status/">
+                        <button type="button" class="btn btn-success" title="Change status">
+                            {% if usersubjects %}
+                                {% for usersubject in usersubjects %}
+                                    {% if usersubject.subject_id == subject.id %}
+                                        {%if usersubject.status == "finish" %}
+                                            Finish
+                                        {% else %}
+                                            Doing
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Doing
+                            {% endif %}
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
 {% endif %}
 
 {% include "subjects/subject_new.html" %}

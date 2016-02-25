@@ -4,11 +4,11 @@ from django.shortcuts import HttpResponse
 from django.core.urlresolvers import reverse
 import json
 
-from .models import Course
+from .models import Course, UserCourse
 from .forms import CourseForm
 from apps.subjects.forms import SubjectForm
 from apps.tasks.forms import TaskForm
-from apps.subjects.models import Subject
+from apps.subjects.models import Subject, UserSubject
 from apps.tasks.models import Task, UserTask
 from django.contrib.auth.models import User
 
@@ -23,6 +23,8 @@ class IndexView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['form'] = CourseForm
+        context['usercourses'] = UserCourse.objects.filter(user_id = self.request.user)
+        context['usercourse'] = [usercourse.course_id for usercourse in context['usercourses']]
         return context
 
     def post(self, request):
@@ -54,6 +56,9 @@ class DetailView(generic.DetailView):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['form'] = SubjectForm
         context['subjects'] = Subject.objects.filter(course=self.object)
+        context['usercourses'] = UserCourse.objects.filter(user_id = self.request.user)
+        context['usercourse'] = [usercourse.course_id for usercourse in context['usercourses']]
+        context['usersubjects'] = UserSubject.objects.filter(user_id = self.request.user)
         return context
 
     def post(self, request, pk):
@@ -89,6 +94,18 @@ class CourseDelete(generic.DeleteView):
         return HttpResponseRedirect("/courses/")
 
 
+class UserCourseJoin(generic.UpdateView):
+    def get(self, request, pk, **kwargs):
+        user = User.objects.get(pk = request.user.id)
+        course = Course.objects.get(pk = pk)
+        if UserCourse.objects.filter(course = course, user = user):
+            return HttpResponseRedirect("/courses/")
+        else:
+            usercourse = UserCourse(course = course, user = user)
+            usercourse.save()
+            return HttpResponseRedirect("/courses/")
+
+
 class SubjectDetail(generic.DetailView):
     model = Subject
     template_name = 'subjects/subject_detail.html'
@@ -98,7 +115,6 @@ class SubjectDetail(generic.DetailView):
         context['form'] = TaskForm
         context['tasks'] = Task.objects.filter(subject=self.object)
         context['usertasks'] = UserTask.objects.filter(user_id = self.request.user)
-        # context['usertasks'] = UserTask.objects.filter(user_id = self.request.user, task_id = context['tasks'])
         context['course_id'] = self.kwargs['course_id']
         return context
 
@@ -139,6 +155,25 @@ class SubjectUpdate(generic.UpdateView):
 class SubjectDelete(generic.DeleteView):
     def get(self, request, pk, **kwargs):
         Subject.objects.get(pk=pk).delete()
+        course_id = self.kwargs['course_id']
+        url = reverse('courses:course-detail', kwargs={'pk': course_id})
+        return HttpResponseRedirect(url)
+
+
+class UserSubjectChangeStatus(generic.UpdateView):
+    def get(self, request, pk, **kwargs):
+        user = User.objects.get(pk = request.user.id)
+        subject = Subject.objects.get(pk = pk)
+        if UserSubject.objects.filter(subject = subject, user = user):
+            usersubject = UserSubject.objects.get(subject = subject, user = user)
+            if usersubject:
+                if usersubject.status == 'finish':
+                    usersubject.status = 'doing'
+                else:
+                    usersubject.status = 'finish'
+        else:
+            usersubject = UserSubject(subject = subject, user = user, status = "finish")
+        usersubject.save()
         course_id = self.kwargs['course_id']
         url = reverse('courses:course-detail', kwargs={'pk': course_id})
         return HttpResponseRedirect(url)
