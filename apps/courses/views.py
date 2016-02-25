@@ -23,6 +23,7 @@ class IndexView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['form'] = CourseForm
+        context['user_current'] = User.objects.get(id = self.request.user.id)
         context['usercourses'] = UserCourse.objects.filter(user_id = self.request.user)
         context['usercourse'] = [usercourse.course_id for usercourse in context['usercourses']]
         return context
@@ -55,10 +56,12 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['form'] = SubjectForm
+        context['user_current'] = User.objects.get(id = self.request.user.id)
         context['subjects'] = Subject.objects.filter(course=self.object)
         context['usercourses'] = UserCourse.objects.filter(user_id = self.request.user)
         context['usercourse'] = [usercourse.course_id for usercourse in context['usercourses']]
         context['usersubjects'] = UserSubject.objects.filter(user_id = self.request.user)
+        context['usersubject'] = [usersubject.subject_id for usersubject in context['usersubjects']]
         return context
 
     def post(self, request, pk):
@@ -113,9 +116,13 @@ class SubjectDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(SubjectDetail, self).get_context_data(**kwargs)
         context['form'] = TaskForm
+        context['user_current'] = User.objects.get(id = self.request.user.id)
         context['tasks'] = Task.objects.filter(subject=self.object)
+        context['usercourses'] = UserCourse.objects.filter(user_id = self.request.user)
+        context['usercourse'] = [usercourse.course_id for usercourse in context['usercourses']]
         context['usertasks'] = UserTask.objects.filter(user_id = self.request.user)
-        context['course_id'] = self.kwargs['course_id']
+        context['usertask'] = [usertask.task_id for usertask in context['usertasks']]
+        context['course_id'] = int(self.kwargs['course_id'])
         return context
 
     def post(self, request, pk, **kwargs):

@@ -4,11 +4,13 @@
 
 {% block content %}
     <center><h1>List of Courses</h1></center>
+    {% if user_current.is_superuser == True %}
     <div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
         <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateCourseModal">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new course
         </button>
     </div>
+    {% endif %}
 
     {% for course in course_list %}
     <div class="col-xs-12 col-sm-6 col-lg-4">
@@ -20,27 +22,33 @@
                 {{ course.description }}
             </div>
             <div class="panel-footer">
+                {% if user_current.is_superuser == True %}
                 <div style="text-align:left">
                     <a href="/courses/{{ course.id }}/edit-course/" class="glyphicon glyphicon-pencil" title="Edit"></a>
                     <a href="/courses/{{ course.id }}/delete-course/" class="glyphicon glyphicon-remove" title="Delete"
                         onclick="return confirm('Are you sure you want to delete this course?')"></a>
                 </div>
+                {% endif %}
                 <div style="text-align:right">
                     {% if course.status == 'open' %}
-                    <button type="button" class="btn btn-success disabled">Opening</button>
-                    {% else %}
-                    <button type="button" class="btn btn-default disabled">Closed</button>
-                    {% endif %}
-                    {% if usercourses %}
-                        {% if course.id not in usercourse %}
-                        <a href="/courses/{{ course.id }}/usercourse-join/">
-                            <button type="button" class="btn btn-success" title="Join"> Join Now? </button>
-                        </a>
+                        <button type="button" class="btn btn-success disabled">Opening</button>
+                        {% if usercourses %}
+                            {% if course.id not in usercourse %}
+                            <a href="/courses/{{ course.id }}/usercourse-join/"
+                                onclick="return confirm('Are you sure you want to join this course?')">
+                                <button type="button" class="btn btn-success" title="Join"> Join Now? </button>
+                            </a>
+                            {% else %}
+                                <button type="button" class="btn btn-default disabled">Joined</button>
+                            {% endif %}
+                        {% else %}
+                            <a href="/courses/{{ course.id }}/usercourse-join/"
+                                onclick="return confirm('Are you sure you want to join this course?')">
+                                <button type="button" class="btn btn-success" title="Join"> Join Now? </button>
+                            </a>
                         {% endif %}
                     {% else %}
-                        <a href="/courses/{{ course.id }}/usercourse-join/">
-                            <button type="button" class="btn btn-success" title="Join"> Join Now? </button>
-                        </a>
+                        <button type="button" class="btn btn-default disabled">Closed</button>
                     {% endif %}
                 </div>
             </div>

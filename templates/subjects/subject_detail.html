@@ -6,11 +6,13 @@
 
 <center><h1>{{ subject.name }}</h1></center>
 
+{% if user_current.is_superuser == True %}
 <div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
     <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateTaskModal">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new task
     </button>
 </div>
+{% endif %}
 
 {% if tasks %}
 <div class="col-xs-12 col-sm-12 col-lg-12">
@@ -19,35 +21,47 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
+            {% if course.id in usercourse %}
             <th>Status</th>
+            {% endif %}
+            {% if user_current.is_superuser == True %}
             <th>Edit</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
         {% for task in tasks %}
+        {{ task.subjects.subject_id }}
         <tr>
             <td>{{ task.name }}</td>
             <td>{{ task.description }}</td>
-            <td>
-                <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/usertask-change-status/"
-                   onclick="return confirm('Are you sure you want to change status this task?')">
-                    <button type="button" class="btn btn-success" title="Change status">
-                        {% if usertasks %}
-                            {% for usertask in usertasks %}
-                                    {% if usertask.task_id == task.id %}
-                                        {%if usertask.status == "finish" %}
-                                            Finish
-                                        {% else %}
-                                            Doing
-                                        {% endif %}
-                                    {% endif %}
-                            {% endfor %}
-                        {% else %}
-                            Doing
-                        {% endif %}
-                    </button>
-                </a>
-            </td>
+            {% if course_id in usercourse %}
+                <td>
+                    <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/usertask-change-status/"
+                       onclick="return confirm('Are you sure you want to change status this task?')">
+                        <button type="button" class="btn btn-success" title="Change status">
+                            {% if usertasks %}
+                                {% if task.id in usertask %}
+                                    {% for usertask in usertasks %}
+                                            {% if usertask.task_id == task.id %}
+                                                {%if usertask.status == "finish" %}
+                                                    Finish
+                                                {% else %}
+                                                    Doing
+                                                {% endif %}
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    Doing
+                                {% endif %}
+                            {% else %}
+                                Doing
+                            {% endif %}
+                        </button>
+                    </a>
+                </td>
+            {% endif %}
+            {% if user_current.is_superuser == True %}
             <td>
                 <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/edit-task/"
                    class="glyphicon glyphicon-pencil" title="Edit"></a>
@@ -55,6 +69,7 @@
                    class="glyphicon glyphicon-remove" title="Delete"
                    onclick="return confirm('Are you sure you want to delete this task?')"></a>
             </td>
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>

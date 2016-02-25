@@ -38,11 +38,13 @@
     </div>
 </div>
 
+{% if user_current.is_superuser == True %}
 <div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
     <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateSubjectModal">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new subject
     </button>
 </div>
+{% endif %}
 
 {% if subjects %}
 <center><h1>List of Subjects</h1></center>
@@ -56,6 +58,7 @@
                 {{ subject.description }}
             </div>
             <div class="panel-footer" style="text-align:right">
+                {% if user_current.is_superuser == True %}
                 <div style="text-align:left">
                     <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/edit-subject/"
                        class="glyphicon glyphicon-pencil" title="Edit"></a>
@@ -63,29 +66,37 @@
                        class="glyphicon glyphicon-remove" title="Delete"
                        onclick="return confirm('Are you sure you want to delete this subject?')"></a>
                 </div>
+                {% endif %}
                 <div style="text-align:right">
                     {% if subject.status == 'open' %}
                         <button type="button" class="btn btn-success disabled">Opening</button>
-                    {% else %}
-                        <button type="button" class="btn btn-default disabled">Closed</button>
-                    {% endif %}
-                    <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/usersubject-change-status/">
-                        <button type="button" class="btn btn-success" title="Change status">
-                            {% if usersubjects %}
-                                {% for usersubject in usersubjects %}
-                                    {% if usersubject.subject_id == subject.id %}
-                                        {%if usersubject.status == "finish" %}
-                                            Finish
+                        {% if course.id in usercourse %}
+                            <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/usersubject-change-status/"
+                                onclick="return confirm('Are you sure you want to change status this subject?')">
+                                <button type="button" class="btn btn-success" title="Change status">
+                                    {% if usersubjects %}
+                                        {% if subject.id in usersubject %}
+                                            {% for usersubject in usersubjects %}
+                                                {% if usersubject.subject_id == subject.id %}
+                                                    {%if usersubject.status == "finish" %}
+                                                        Finish
+                                                    {% else %}
+                                                        Doing
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
                                         {% else %}
                                             Doing
                                         {% endif %}
+                                    {% else %}
+                                        Doing
                                     {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                Doing
-                            {% endif %}
-                        </button>
-                    </a>
+                                </button>
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <button type="button" class="btn btn-default disabled">Closed</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
