@@ -36,7 +36,7 @@
             <td>{{ user.date_joined }}</td>
             <td>
                 <div class="btn-group" role="group" aria-label="...">
-                  <a type="button" class="btn btn-default" href="#" data-toggle="tooltip" data-placement="top" title="View info of {{ user.username }}">
+                  <a type="button" class="btn btn-default" href="/users/1/profile" data-toggle="tooltip" data-placement="top" title="View info of {{ user.username }}">
                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                   </a>
                   <a type="button" class="btn btn-success" href="/admin/users/{{ user.id }}/update" data-toggle="tooltip" data-placement="top" title="Update info of {{ user.username }}">

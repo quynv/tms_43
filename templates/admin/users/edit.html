@@ -16,10 +16,9 @@
                                     {{ form.errors }}
                                 </div>
                             {% endif %}
-
                             <div class="form-group ">
-                                <label for="{{ form.username.id_for_label }}">Username</label>
-                                <input name="{{ form.username.html_name }}" type="text" class="form-control" id="{{ form.username.id_for_label }}" placeholder="Username" value="{{ form.username.value|default:'' }}">
+                                <label for="username">Username</label>
+                                <input name="username" type="text" class="form-control" disabled id="username" placeholder="Username" value="{{ user.username }}">
                             </div>
                             <div class="form-group">
                                 <label for="{{ form.first_name.id_for_label }}">First name</label>
@@ -34,17 +33,9 @@
                                 <input name="{{ form.email.html_name }}" type="email" class="form-control" id="{{ form.email.id_for_label }}" placeholder="Email" value="{{ form.email.value|default:'' }}">
                             </div>
                             <div class="form-group">
-                                <label for="{{ form.password1.id_for_label }}">Password</label>
-                                <input name="{{ form.password1.html_name }}" type="password" class="form-control" id="{{ form.password1.id_for_label }}" placeholder="Password" value="{{ form.password1.value|default:'' }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="{{ form.password2.id_for_label }}">Re-type password</label>
-                                <input name="{{ form.password2.html_name }}" type="password" class="form-control" id="{{ form.password2.id_for_label }}" placeholder="Retype password" value="{{ form.password2.value|default:'' }}">
-                            </div>
-                            <div class="form-group">
                                 <div class="input-group">
-                                    <label for="{{ form.is_superuser.id_for_label }}">Select type</label>
-                                    {{ form.is_superuser }}
+                                    <label for="{{ form.is_staff.id_for_label }}">Is Supervisor?&nbsp;&nbsp;&nbsp;</label>
+                                    {{ form.is_staff }}
                                 </div>
                             </div>
                             <div class="text-center">

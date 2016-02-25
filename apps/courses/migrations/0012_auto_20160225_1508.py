@@ -7,11 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('subjects', '0009_remove_subject_task'),
-        ('subjects', '0007_auto_20160225_0833'),
-        ('subjects', '0007_auto_20160225_0833'),
-        ('subjects', '0009_remove_subject_task'),
+        ('courses', '0011_merge'),
     ]
 
     operations = [
+        migrations.AlterField(
+            model_name='usercourse',
+            name='is_active',
+            field=models.BooleanField(default=False),
+        ),
     ]

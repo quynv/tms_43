@@ -20,7 +20,7 @@ class ReportForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # self.user = kwargs.pop('User', None)
         super(ReportForm, self).__init__(*args, **kwargs)
-        self.fields['tags'].widget.choices = [(user.id, user.username) for user in User.objects.all()]
+        self.fields['tags'].widget.choices = [(user.id, user.username) for user in User.objects.filter(is_staff=1)]
         self.fields['title'].required = True
         self.fields['content'].required = True
 

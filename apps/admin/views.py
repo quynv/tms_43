@@ -8,11 +8,14 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 from apps.courses.models import Course
+from apps.courses.models import UserCourse
 from apps.subjects.models import Subject
 from apps.admin.forms import AdminCourseForm
 from apps.subjects.forms import SubjectForm
 from apps.users.models import UserProfile
 from .forms import UserForm
+from .forms import UserUpdateForm
+from .forms import AddUser2CourseForm
 import json
 # Create your views here.
 
@@ -231,9 +234,14 @@ class CreateUserView(generic.CreateView):
 
 class UpdateUserView(generic.UpdateView):
     model = User
-    form_class = UserForm
+    form_class = UserUpdateForm
     template_name = 'admin/users/edit.html'
     success_url = '/admin/users'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateUserView, self).get_context_data(**kwargs)
+        context['user'] = User.objects.get(pk=self.kwargs['pk'])
+        return context
 
 
 class ListUserView(generic.ListView):
@@ -279,3 +287,12 @@ class DeleteUserView(generic.View):
                     }),
                     content_type="application/json"
                 )
+
+
+class AddUser2Course(generic.UpdateView):
+    model = Course
+    form_class = AddUser2CourseForm
+    template_name = 'admin/courses/add_user.html'
+    success_url = '/admin/courses'
+
+
