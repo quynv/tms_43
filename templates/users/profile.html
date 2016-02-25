@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}
+
+{% block 'css' %}{% endblock %}
+
+{% block content %}
+
+<section class="col-md-8 col-lg-8 col-md-offset-1">
+{% if user %}
+    <div class="row info">
+        <div class="col-md-3">
+                {% if user.user_profile.avatar %}
+                    <a href="{{ user.user_profile.avatar.url }}">
+                        <img src="{{ user.user_profile.avatar.url }}" alt="http://www.varthagatamilan.com.au/img/usersPP/default.jpg" width="102" height="102">
+                    </a>
+                {% else %}
+                    <a href="http://www.varthagatamilan.com.au/img/usersPP/default.jpg">
+                        <img src="http://www.varthagatamilan.com.au/img/usersPP/default.jpg" alt="http://www.varthagatamilan.com.au/img/usersPP/default.jpg" width="102" height="102">
+                    </a>
+                {% endif %}
+        </div>
+        <div class="col-md-6">
+            <p class="text-center"><strong>Profile</strong></p>
+            <p>name: {{user.first_name}}&nbsp{{user.last_name}}</p>
+            <p>email: {{user.email}}</p>
+            <p>course: {{course.name}}</p>
+        </div>
+        <div class="col-md-3">
+            <a type="button" class="btn btn-info" href="/users/setting/">Edit profile</a>
+        </div>
+    </div>
+{% endif %}
+    <div class="row course-detail">
+        {% for subject in subjects %}
+        <div class="course-detail-inner">
+            <hr>
+            <div class="row">
+                <div class="col-sm-6">
+                    <strong>{{subject.name}}</strong>&nbsp; start_date:&nbsp;{{subject.created_at}}
+                </div>
+                <div class="col-sm-6">
+                    <span class=" label label-default">{{subject.status}}</span>
+                </div>
+            </div>
+            {% for task in tasks %}
+                {% for task_subject in task.subject.all %}
+                    {% if task_subject.id = subject.id %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>{{task.name}}</strong>&nbsp; start_date:&nbsp;{{task.created_at}}
+                        </div>
+                        <div class="col-sm-6">
+                            <span class=" label label-default">
+                                {% if usertasks %}
+                                    {% for usertask in usertasks %}
+                                            {% if usertask.task_id == task.id %}
+                                                {%if usertask.status == "finish" %}
+                                                    Finish
+                                                {% else %}
+                                                    Doing
+                                                {% endif %}
+                                            {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    Doing
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% include "subjects/subject_new.html" %}
+{% endblock %}
+
+{% block js %}{% endblock %}
+
+

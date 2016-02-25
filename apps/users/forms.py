@@ -12,7 +12,7 @@ class UserCreateForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'password']
+        fields = ['username','first_name', 'last_name', 'email', 'password1', 'password2']
         widgets = {
             'username' : forms.TextInput(
                 attrs={'class':'form-control', 'placeholder':'Username'}
