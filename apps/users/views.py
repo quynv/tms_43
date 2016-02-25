@@ -131,6 +131,8 @@ class Index(View):
     def get(self, request):
         params  = dict()
         params["name"] = "javimuu"
+        params['usercourses'] = UserCourse.objects.filter(user_id = self.request.user.id)
+        params['course_list'] = Course.objects.all()
         return render(request, 'subjects/index.html', params)
 
 
