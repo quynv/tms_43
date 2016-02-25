@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^courses/new/$', permission_required('is_superuser', login_url=loginUrl)(views.CreateCourseView.as_view()), name='createcourse'),
     url(r'^courses/change_status/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateStatusCourse.as_view()), name='changecourse'),
     url(r'^courses/(?P<pk>[0-9]+)/update/$', permission_required('is_superuser', login_url=loginUrl)(views.UpdateCourseView.as_view()), name='updatecourse'),
+    url(r'^courses/(?P<pk>[0-9]+)/add-user/$', permission_required('is_superuser', login_url=loginUrl)(views.AddUser2Course.as_view()), name='addusertocourse'),
     url(r'^courses/delete/$', permission_required('is_superuser', login_url=loginUrl)(views.DeleteCourseView.as_view()), name='deletecourse'),
 
     url(r'^subjects/new/$', permission_required('is_superuser', login_url=loginUrl)(views.CreateSubjectView.as_view()), name='createsubject'),

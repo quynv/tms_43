@@ -1,0 +1,25 @@
+{% extends 'admin/layouts/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+    <h1>Add user to this course</h1>
+    <form id="course_form" action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" id="update-course">Add</button>
+    </form>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.selectpicker').selectpicker({
+              style: 'btn-default',
+              size: 4
+            });
+        })
+    </script>
+{% endblock %}
+{% block css %}
+    <link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet">
+{% endblock %}

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from apps.courses.models import Course
+from apps.courses.models import UserCourse
 from apps.users.forms import UserCreateForm
 from apps.courses.forms import CourseForm
 
@@ -68,4 +69,16 @@ class AdminCourseForm(CourseForm):
     def __init__(self, *args, **kwargs):
         super(AdminCourseForm, self).__init__(*args, **kwargs)
         self.fields["supervisors"].widget.choices = [(user.id, user.username) for user in User.objects.filter(is_superuser=1,is_staff=1)]
+
+
+class AddUser2CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['users']
+        widgets = {
+            'users': forms.CheckboxSelectMultiple
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AddUser2CourseForm, self).__init__(*args, **kwargs)
 

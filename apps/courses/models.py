@@ -15,12 +15,16 @@ class Course(models.Model):
     updated_at = models.DateField(auto_now=True)
     created_at = models.DateField(auto_now_add=True)
     supervisors = models.ManyToManyField(User, blank=True)
+    users = models.ManyToManyField(User, related_name='user_course', through='UserCourse')
 
 
 class UserCourse(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User,null=True,blank=True,related_name="user_courses")
-    course = models.ForeignKey(Course,null=True,blank=True,related_name="courses")
+    user = models.ForeignKey(User, null=True, blank=True, related_name="user_courses")
+    course = models.ForeignKey(Course, null=True, blank=True, related_name="courses")
     is_active = models.BooleanField(default=False)
     updated_at = models.DateField(auto_now=True)
     created_at = models.DateField(auto_now_add=True)
+
+    class Meta:
+        auto_created = True
