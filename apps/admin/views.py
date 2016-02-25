@@ -13,6 +13,7 @@ from apps.admin.forms import AdminCourseForm
 from apps.subjects.forms import SubjectForm
 from apps.users.models import UserProfile
 from .forms import UserForm
+from .forms import UserUpdateForm
 import json
 # Create your views here.
 
@@ -231,9 +232,14 @@ class CreateUserView(generic.CreateView):
 
 class UpdateUserView(generic.UpdateView):
     model = User
-    form_class = UserForm
+    form_class = UserUpdateForm
     template_name = 'admin/users/edit.html'
     success_url = '/admin/users'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateUserView, self).get_context_data(**kwargs)
+        context['user'] = User.objects.get(pk=self.kwargs['pk'])
+        return context
 
 
 class ListUserView(generic.ListView):
