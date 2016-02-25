@@ -21,7 +21,7 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
-            {% if course.id in usercourse %}
+            {% if course_id in usercourse %}
             <th>Status</th>
             {% endif %}
             {% if user_current.is_superuser == True %}

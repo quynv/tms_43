@@ -16,26 +16,24 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="/courses/">Courses</a></li>
-        <li><a href="#">Subjects</a></li>
       </ul>
-      <form class="navbar-form navbar-left" role="search" id="search-form" method="post" action="">
-        {% csrf_token %}
-        <div class="form-group">
-          {{ search.query.errors }}
-          {{ search.query }}
-        </div>
-        <button type="submit" class="btn btn-default btn-search">Search</button>
-      </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Hello,{{abc.username}} </a></li>
+        {% if user.is_authenticated %}
+        <li><a href="#">Hello, {{user.username}} </a></li>
+        {% endif %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Mypage</a></li>
+            <li><a href="/users/profile/">Profile</a></li>
             <li><a href="/users/setting/">Setting</a></li>
             <li role="separator" class="divider"></li>
+            {% for user_course in user.user_courses.all %}
+              {% if user_course.is_active == True %}
+                <li><a href="/courses/{{ user_course.id }}">My Course</a></li>
+              {% endif %}
+            {% endfor %}
             <li><a href="/users/logout/">Logout</a></li>
           </ul>
         </li>
