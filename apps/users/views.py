@@ -136,7 +136,7 @@ class Index(View):
         return render(request, 'subjects/index.html', params)
 
 
-class UserProfile(ListView):
+class UserProfileView(ListView):
     model = Course
     template_name = 'users/profile.html'
     context_object_name = 'courses'
@@ -146,16 +146,18 @@ class UserProfile(ListView):
         context = super(ListView, self).get_context_data(**kwargs)
         return context
 
-    def get(self, request):
-        user = get_object_or_404(User, pk= request.user.id)
-        user_courses = get_object_or_404(UserCourse, user_id = request.user.id)
-        course = get_object_or_404(Course, pk = user_courses.course_id)
-        user_subjects= UserSubject.objects.filter(user_id = request.user.id)
+    def get(self, request, pk):
+        # current_user = get_object_or_404(User, pk= request.user.id)
+        current_user = get_object_or_404(User, pk= int(self.kwargs['pk']))
+        user_courses = UserCourse.objects.filter(user_id = current_user.id)
+        course = Course.objects.filter(courses = user_courses)
+        user_subjects= UserSubject.objects.filter(user_id = current_user.id)
         subjects = Subject.objects.filter(course = course)
         tasks = Task.objects.filter(subject= subjects)
-        user_tasks = UserTask.objects.filter(user_id = request.user.id)
+        user_tasks = UserTask.objects.filter(user_id = current_user.id)
         params = dict()
-        params["user"] = user
+        params["current_user"] = current_user
+        # params["current_user"] = current_user
         params["course"] = course
         params["subjects"] = subjects
         params['tasks'] = tasks
