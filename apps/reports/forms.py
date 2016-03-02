@@ -18,10 +18,16 @@ class ReportForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        # self.user = kwargs.pop('User', None)
+        self.user = kwargs.pop('user', None)
         super(ReportForm, self).__init__(*args, **kwargs)
         self.fields['tags'].widget.choices = [(user.id, user.username) for user in User.objects.filter(is_staff=1)]
         self.fields['title'].required = True
         self.fields['content'].required = True
 
-
+    def save(self, commit=True):
+        report = super(ReportForm, self).save(commit=False)
+        report.user = self.user
+        if commit:
+            report.save()
+            self.save_m2m()
+        return report

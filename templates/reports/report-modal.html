@@ -6,11 +6,17 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">
-                    <a href="#">
-                        <img src="{% static "images/people/110/guy-1.jpg" %}" width="60px" height="60px">
-                        QUYNV
-                    </a>
-
+                    {% if user.user_profile.avatar.url %}
+                        <a href="/users/{{ user.id }}/profile">
+                            <img src="{{ user.user_profile.avatar.url }}" width="60px" height="60px" alt="avatar">
+                            {{ user.username }}
+                        </a>
+                    {% else %}
+                        <a href="/users/{{ user.id }}/profile">
+                            <img src="http://www.varthagatamilan.com.au/img/usersPP/default.jpg" width="60px" height="60px" alt="http://www.varthagatamilan.com.au/img/usersPP/default.jpg">
+                            {{ user.username }}
+                        </a>
+                    {% endif %}
                     <small>at
                         <script type="text/javascript">
                             var d = new Date();
@@ -39,7 +45,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="new-report">Save changes</button>
+                <button type="button" class="btn btn-primary" id="new-report" data-user="{{ user.id }}">Save changes</button>
             </div>
         </div>
     </div>

@@ -15,15 +15,18 @@ class IndexView(generic.ListView):
     model = Report
     context_object_name = 'reports'
     paginate_by = 6
-    queryset = Report.objects.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        context['form'] = ReportForm
+        context['form'] = ReportForm(user=self.request.user)
+        context['user_id'] = self.kwargs['user_id']
         return context
 
-    def post(self, request):
-        form = ReportForm(request.POST)
+    def get_queryset(self):
+        return Report.objects.filter(user_id=self.kwargs['user_id']).order_by('-created_at')
+
+    def post(self, request, user_id):
+        form = ReportForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             return HttpResponse(

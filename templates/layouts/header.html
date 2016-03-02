@@ -27,6 +27,7 @@
           <ul class="dropdown-menu">
             <li><a href="/users/profile/">Profile</a></li>
             <li><a href="/users/setting/">Setting</a></li>
+            <li><a href="/reports/{{ user.id }}/user">Reports</a></li>
             <li role="separator" class="divider"></li>
             {% for user_course in user.user_courses.all %}
               {% if user_course.is_active == True %}

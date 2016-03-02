@@ -3,19 +3,28 @@
 {% block content %}
     <div class="container-fluid">
         <ol class="breadcrumb">
-            <li><a href="/reports/">List report</a></li>
+            <li><a href="/reports/{{ user_id }}/user">List report</a></li>
             <li><a href="/reports/{{ report.id }}/edit">Edit report {{ report.id }}</a></li>
         </ol>
         <div class="panel panel-default">
             <div class="report-content-container" id="report-modal">
                 <div class="report-header">
                     <h4>
-                        <a href="#">
-                            <img src="{% static "images/people/110/guy-1.jpg" %}" width="60px" height="60px">
-                            {{ report.user.username }}
-                        </a>
+                        {% if user.user_profile.avatar.url %}
+                            <a href="/users/{{ user.id }}/profile">
+                                <img src="{{ user.user_profile.avatar.url }}" width="60px" height="60px" alt="avatar">
+                                {{ user.username }}
+                            </a>
+                        {% else %}
+                            <a href="/users/{{ user.id }}/profile">
+                                <img src="http://www.varthagatamilan.com.au/img/usersPP/default.jpg" width="60px"
+                                     height="60px" alt="http://www.varthagatamilan.com.au/img/usersPP/default.jpg">
+                                {{ user.username }}
+                            </a>
+                        {% endif %}
                         <small>
                             at {{ report.created_at.date }}
+                        {% if report.user == user %}
                         <span data-placement="top" data-toggle="tooltip" title="Edit" class="report-menu">
                             <i class="glyphicon glyphicon-chevron-down" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="true"
@@ -24,7 +33,7 @@
                                 <li><a href="#">Delete this report</a></li>
                             </ul>
                         </span>
-
+                        {% endif %}
                         </small>
 
                     </h4>

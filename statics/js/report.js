@@ -3,8 +3,9 @@
  */
 
 $(document).on('click','#new-report', function(){
+    var user_id = $(this).data('user');
     $.ajax({
-        url: '/reports/',
+        url: '/reports/'+user_id+'/user/',
         data: $('#post_report_form').serialize(),
         method: 'post',
         dataType: 'json',
