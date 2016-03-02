@@ -11,6 +11,7 @@ from apps.tasks.forms import TaskForm
 from apps.subjects.models import Subject, UserSubject
 from apps.tasks.models import Task, UserTask
 from django.contrib.auth.models import User
+from apps.activities.models import Activity
 
 
 class IndexView(generic.ListView):
@@ -214,8 +215,14 @@ class UserTaskChangeStatus(generic.UpdateView):
             if usertask:
                 if usertask.status == 'finish':
                     usertask.status = 'doing'
+                    content = "is changed task status to DOING"
+                    activity = Activity(user = request.user, content= content)
+                    activity.save()
                 else:
                     usertask.status = 'finish'
+                    content = "is changed task status to FINISH"
+                    activity = Activity(user = request.user, content= content)
+                    activity.save()
         else:
             usertask = UserTask(task = task, user = user, status = "finish")
         usertask.save()

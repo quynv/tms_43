@@ -60,6 +60,8 @@ from apps.tasks.models import (
     UserTask,
 )
 
+from apps.activities.models import Activity
+
 # Create your views here.
 class SignupUserView(BaseView, CreateView):
     model = django_apps.get_model(settings.AUTH_USER_MODEL)
@@ -175,6 +177,9 @@ def change_avatar(request):
         if ava_form.is_valid():
             profile = UserProfile(user = request.user, avatar= request.FILES['avatar'])
             profile.save()
+            content = "is changed avatar"
+            activity = Activity(user = request.user, content= content)
+            activity.save()
 
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse('users:avatar'))
@@ -197,6 +202,9 @@ def edit_profile(request):
         profile_form = UserEditForm(request.POST, instance=user)
         if profile_form.is_valid():
             profile_form.save()
+            content = "is changed profile"
+            activity = Activity(user = request.user, content= content)
+            activity.save()
 
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse('users:setting'))
