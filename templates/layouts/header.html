@@ -10,7 +10,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">FTS</a>
+      <a class="navbar-brand" href="/">FTS</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -21,23 +21,24 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-          <li><a href="/users/{{user.id}}/profile/">Hello, {{user.username}} </a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="/users/{{user.id}}/profile/">Profile</a></li>
-              <li><a href="/users/setting/">Setting</a></li>
-              <li role="separator" class="divider"></li>
-              {% for user_course in user.user_courses.all %}
-                {% if user_course.is_active == True %}
-                  <li><a href="/courses/{{ user_course.id }}">My Course</a></li>
-                {% endif %}
-              {% endfor %}
-              <li><a href="/users/logout/">Logout</a></li>
-            </ul>
-          </li>
+        <li><a href="/users/{{user.id}}/profile/">Hello, {{user.username}} </a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/profile/">Profile</a></li>
+            <li><a href="/users/setting/">Setting</a></li>
+            <li role="separator" class="divider"></li>
+            {% for user_course in user.user_courses.all %}
+              {% if user_course.is_active == True %}
+                <li><a href="/courses/{{ user_course.id }}">My Course</a></li>
+              {% endif %}
+            {% endfor %}
+            <li><a href="/users/logout/">Logout</a></li>
+          </ul>
+        </li>
         {% else %}
-          <li><a href="/users/login/">Login</a></li>
+        <li><a href="/users/login/">Login</a></li>
+        <li><a href="/users/signup/">Sign up</a></li>
         {% endif %}
       </ul>
     </div><!-- /.navbar-collapse -->

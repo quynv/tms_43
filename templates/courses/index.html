@@ -21,7 +21,7 @@
                     {% if usercourse.course_id == course.id %}
                         <tr>
                             <td><a href="/courses/{{ course.id }}/">{{ course.name }}</a></td>
-                            <td style="width: 60%">{{ course.description }}</td>
+                            <td style="text-align:justify; width: 60%">{{ course.description }}</td>
                             <td>
                                 {% if course.status == "open" %}
                                     <button type="button" class="btn btn-success disabled">Opening</button>

@@ -131,11 +131,13 @@ class LogoutUserView(View):
 
 class Index(View):
     def get(self, request):
-        params  = dict()
-        params["name"] = "javimuu"
-        params['usercourses'] = UserCourse.objects.filter(user_id = self.request.user.id)
-        params['course_list'] = Course.objects.all()
-        return render(request, 'subjects/index.html', params)
+        if request.user.is_authenticated():
+            params  = dict()
+            params['usercourses'] = UserCourse.objects.filter(user_id = self.request.user.id)
+            params['course_list'] = Course.objects.all()
+            return render(request, 'courses/index.html', params)
+        else:
+            return HttpResponseRedirect("/users/login/")
 
 
 class UserProfileView(ListView):
