@@ -6,7 +6,7 @@
 
 <center><h1>{{ subject.name }}</h1></center>
 
-{% if user_current.is_superuser == True %}
+{% if user.is_superuser == True %}
 <div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
     <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateTaskModal">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new task
@@ -24,7 +24,7 @@
             {% if course_id in usercourse %}
             <th>Status</th>
             {% endif %}
-            {% if user_current.is_superuser == True %}
+            {% if user.is_superuser == True %}
             <th>Edit</th>
             {% endif %}
         </tr>
@@ -61,7 +61,7 @@
                     </a>
                 </td>
             {% endif %}
-            {% if user_current.is_superuser == True %}
+            {% if user.is_superuser == True %}
             <td>
                 <a href="/courses/{{ course_id }}/subjects/{{ subject.id }}/tasks/{{ task.id }}/edit-task/"
                    class="glyphicon glyphicon-pencil" title="Edit"></a>

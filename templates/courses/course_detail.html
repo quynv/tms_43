@@ -6,16 +6,18 @@
 <center>
     <h1>
         {{ course.name }}
-        {% if usercourses %}
-            {% if course.id not in usercourse %}
-            <a href="/courses/{{ course.id }}/usercourse-join/">
-                <button type="button" class="btn btn-success" title="Join"> Join Now?</button>
-            </a>
+        {% if user.is_authenticated %}
+            {% if usercourses %}
+                {% if course.id not in usercourse %}
+                <a href="/courses/{{ course.id }}/usercourse-join/">
+                    <button type="button" class="btn btn-success" title="Join"> Join Now?</button>
+                </a>
+                {% endif %}
+            {% else %}
+                <a href="/courses/{{ course.id }}/usercourse-join/">
+                    <button type="button" class="btn btn-success" title="Join"> Join Now?</button>
+                </a>
             {% endif %}
-        {% else %}
-            <a href="/courses/{{ course.id }}/usercourse-join/">
-                <button type="button" class="btn btn-success" title="Join"> Join Now?</button>
-            </a>
         {% endif %}
     </h1>
 </center>
@@ -32,13 +34,13 @@
                 <strong>No subjects currently in course.</strong>
             {%endif%}
         </div>
-        <div class="panel-body" style="word-break: break-all;">
+        <div class="panel-body" style="word-wrap: break-word;">
             {{ course.description }}
         </div>
     </div>
 </div>
 
-{% if user_current.is_superuser == True %}
+{% if user.is_superuser == True %}
 <div class="col-xs-12 col-sm-12 col-lg-12" style="padding-bottom:10px">
     <button type="button" class="btn btn-info right" data-toggle="modal" data-target="#CreateSubjectModal">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new subject
@@ -58,7 +60,7 @@
                 {{ subject.description }}
             </div>
             <div class="panel-footer" style="text-align:right">
-                {% if user_current.is_superuser == True %}
+                {% if user.is_superuser == True %}
                 <div style="text-align:left">
                     <a href="/courses/{{ course.id }}/subjects/{{ subject.id }}/edit-subject/"
                        class="glyphicon glyphicon-pencil" title="Edit"></a>
