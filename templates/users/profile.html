@@ -8,9 +8,9 @@
 {% if user %}
     <div class="row info">
         <div class="col-md-3">
-                {% if user.user_profile.avatar %}
-                    <a href="{{ user.user_profile.avatar.url }}">
-                        <img src="{{ user.user_profile.avatar.url }}" alt="http://www.varthagatamilan.com.au/img/usersPP/default.jpg" width="102" height="102">
+                {% if current_user.user_profile.avatar %}
+                    <a href="{{ current_user.user_profile.avatar.url }}">
+                        <img src="{{ current_user.user_profile.avatar.url }}" alt="http://www.varthagatamilan.com.au/img/usersPP/default.jpg" width="102" height="102">
                     </a>
                 {% else %}
                     <a href="http://www.varthagatamilan.com.au/img/usersPP/default.jpg">
@@ -20,13 +20,17 @@
         </div>
         <div class="col-md-6">
             <p class="text-center"><strong>Profile</strong></p>
-            <p>name: {{user.first_name}}&nbsp{{user.last_name}}</p>
-            <p>email: {{user.email}}</p>
-            <p>course: {{course.name}}</p>
+            <p>name: {{current_user.first_name}}&nbsp{{current_user.last_name}}</p>
+            <p>email: {{current_user.email}}</p>
+            {% for cou in course.all %}
+            <p>course: {{cou.name}}</p>
+            {% endfor %}
         </div>
+        {% if current_user.id == user.id %}
         <div class="col-md-3">
             <a type="button" class="btn btn-info" href="/users/setting/">Edit profile</a>
         </div>
+        {% endif %}
     </div>
 {% endif %}
     <div class="row course-detail">
